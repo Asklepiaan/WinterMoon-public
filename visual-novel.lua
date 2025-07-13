@@ -38,7 +38,6 @@ vnui        = Winter.getPath() .. '../Resources/package/ui/testui.png'
 testbg      = Winter.getPath() .. '../Resources/package/backgrounds/testbg.png'
 testmenu    = Winter.getPath() .. '../Resources/package/ui/testmenu.png'
 testbox     = Winter.getPath() .. '../Resources/package/ui/testbox.png'
-blankpc     = Winter.getPath() .. '../Resources/package/ui/blank.png'
 hyenajpeg   = Winter.getPath() .. '../Resources/package/characters/hyenajpeg.png'
 plastic     = Winter.getPath() .. '../Resources/package/backgrounds/plastic.png'
 
