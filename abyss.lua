@@ -936,12 +936,18 @@ while not Render.checkClose() do
 		}
 
 		playerx = -1; playery = -1
-		alath = false
+		alatch = false
+		mlatch = false
 		direction = Plush.getPlayerRotation() / 0.0174533
 		angle = Plush.getTilt() / 0.0174533
 		accuracy = 100
 		enemy = 5
 		itorch = 0
+		targetx, targety = Plush.getPlayerPosition()
+		targeta = direction
+		movingforward = true
+		movingdist = 0
+		movingdirection = 0
 
 		loop = true
 		while (loop) and not Render.checkClose() do
@@ -979,33 +985,68 @@ while not Render.checkClose() do
 			oldx = playerx
 			oldy = playery
 			playerx, playery = Plush.getPlayerPosition()
-			if (mlatch == false) then
+			print('\nplayerx: ' .. playerx .. '\ntargetx: ' .. targetx .. '\nplayery: ' .. playery .. '\ntargety: ' .. targety .. '\ndirection: ' .. direction .. '\ntargeta: ' .. targeta .. '\nmovingdist: ' .. movingdist .. '\nmovingdirection: ' .. movingdirection)
+			if (mlatch == true) then
+				if not (targetx == playerx) or not (targety == playery) or not (targeta == direction) then
+					accuracy = accuracy + 1
+					alatch = false
+					Plush.movePlayer(movingdist, movingforward)
+					direction = direction + movingdirection
+				else
+					mlatch = flase
+				end
+			else
 				accuracy = accuracy - 1
-			end
-			mlatch = false
-			if (input.key.w) then
-				Plush.movePlayer(1, true)
-				accuracy = accuracy + 1; alatch = false; mlatch = true
-			end
-			if (input.key.s) then
-				Plush.movePlayer(-1, true)
-				accuracy = accuracy + 1; alatch = false; mlatch = true
-			end
-			if (input.key.q) then
-				Plush.movePlayer(-1, false)
-				accuracy = accuracy + 1; alatch = false; mlatch = true
-			end
-			if (input.key.e) then
-				Plush.movePlayer(1, false)
-				accuracy = accuracy + 1; alatch = false; mlatch = true
-			end
-			if (input.key.a) then
-				direction = direction - 15
-				accuracy = accuracy + 1; alatch = false; mlatch = true
-			end
-			if (input.key.d) then
-				direction = direction + 15
-				accuracy = accuracy + 1; alatch = false; mlatch = true
+				if (input.key.w) then
+					targetx, targety = Plush.dontMovePlayer(16, true)
+					if not (Plush.checkWall(targetx, targety, wallsVector)) then
+						mlatch = true
+						movingforward = true
+						movingdirection = 0
+						targeta = direction
+						movingdist = 1
+					end
+				elseif (input.key.s) then
+					targetx, targety = Plush.dontMovePlayer(-16, true)
+					if not (Plush.checkWall(targetx, targety, wallsVector)) then
+						mlatch = true
+						movingforward = true
+						movingdirection = 0
+						targeta = direction
+						movingdist = -1
+					end
+				elseif (input.key.q) then
+					targetx, targety = Plush.dontMovePlayer(-16, flase)
+					if not (Plush.checkWall(targetx, targety, wallsVector)) then
+						mlatch = true
+						movingforward = false
+						movingdirection = 0
+						movingdist = -1
+					end
+				elseif (input.key.e) then
+					targetx, targety = Plush.dontMovePlayer(16, flase)
+					if not (Plush.checkWall(targetx, targety, wallsVector)) then
+						mlatch = true
+						movingforward = false
+						movingdirection = 0
+						movingdist = 1
+					end
+				elseif (input.key.a) then
+					targetx, targety = playerx, playery
+					movingdirection = -5
+					targeta = direction - 90
+					movingdist = 0
+					mlatch = true
+				elseif (input.key.d) then
+					targetx, targety = playerx, playery
+					movingdirection = 5
+					targeta = direction + 90
+					movingdist = 0
+					mlatch = true
+				end
+				targetx = Winter.round((targetx + 8) / 16, 0) * 16 - 8
+				targety = Winter.round((targety + 8) / 16, 0) * 16 - 8
+				targeta = Plush.round90(targeta)
 			end
 			if (input.key.r) then
 				angle = angle - 5
@@ -1016,30 +1057,38 @@ while not Render.checkClose() do
 				accuracy = accuracy + 1; alatch = false; mlatch = true
 			end
 
+			if (direction > 360) then
+				direction = direction - 360
+			elseif (direction < 0) then
+				direction = direction + 360
+			end
+			if (targeta > 360) then
+				targeta = targeta - 360
+			elseif (targeta < 0) then
+				targeta = targeta + 360
+			end
 			if (angle > 25) then
 				angle = 25
 			elseif (angle < -25) then
 				angle = -25
 			end
+			if (debugger == true) then
+				debugentries = debugentries + 1
+				debuglog = debuglog .. debugentries .. ': direction: ' .. direction .. ' angle: ' .. angle .. ' accuracy: ' .. accuracy .. ' x: ' .. playerx .. ' y: ' .. playery .. '\n'
+			end
 
 			Plush.setPlayerRotation(direction * 0.0174533)
 			Plush.setTilt(angle * 0.0174533)
-			if (accuracy < 1) then
-				accuracy = 1
+			if (accuracy < 2) then
+				accuracy = 2
 			end
-			if (accuracy > 3) then
-				accuracy = 3
+			if (accuracy > 4) then
+				accuracy = 4
 			end
 			if not (Plush.getAccuracy() == Winter.round(accuracy, 0)) then
 				alatch = false
 			end
 			Plush.setAccuracy(Winter.round(accuracy, 0))
-
-			if (Plush.checkWall(playerx, playery, wallsVector)) then
-				playerx = oldx
-				playery = oldy
-				Plush.setPlayerPosition(playerx, playery)
-			end
 
 			tileX = Winter.round((playerx + 8) / 16, 0)
 			tileY = Winter.round((playery + 8) / 16, 0)
@@ -1083,7 +1132,8 @@ while not Render.checkClose() do
 			if (alatch == false) then
 				Plush.raycast(WINTER_FRAMEBUFFER, threads)
 				alatch = true
-				Plush.dither(WINTER_FRAMEBUFFER, 12.5, false)
+				--Plush.dither(WINTER_FRAMEBUFFER, 12.5, false)
+				Plush.bilinearSolid(WINTER_FRAMEBUFFER)
 			end
 			Winter.renderStack()
 			Render.renderImage(WINTER_FRAMEBUFFER, 0, 0, 1.0, 0.0)

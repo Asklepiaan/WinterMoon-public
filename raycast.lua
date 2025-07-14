@@ -48,24 +48,44 @@ debugroom = {
 		{ 1,10,19, 9, 9, 8, 8, 1,12,12,12,12,12},
 	},
 	floorVector = {
-		{12,12,12,12,12, 0, 0, 0, 0, 0, 0, 0, 0},
-		{12,12,12,12,12, 0,18, 0, 3, 3, 3, 3},
-		{12,12,12,12,12, 0, 0, 0, 3, 3, 3, 3},
-		{12,12,12,12,12, 0, 0, 0, 3, 3, 3, 3, 3},
+		{12,12,12,12,12,19,19,19,19,19,19,19,19},
+		{12,12,12,12,12,19,11,19, 3, 3, 3, 3},
+		{12,12,12,12,12,19,19,19, 3, 3, 3, 3},
+		{12,12,12,12,12,19,19,19, 3, 3, 3, 3, 3},
 		{12,12,12,12,12, 3, 2, 3, 3, 3, 3, 3, 3},
 		{ 2, 3, 2, 3, 2, 3, 2, 3, 3, 3, 3, 3, 3},
 		{ 2, 3, 2, 3, 2, 3, 2, 3, 3, 3, 3, 3, 3},
 		{ 2, 3, 2, 3, 2, 3, 2, 3, 3, 3, 3, 3, 3},
 	},
 	roofVector = {
-		{12,12,12,12,12, 0, 0, 0, 0, 0, 0, 0, 0},
-		{12,12,12,12,12, 0,11, 0, 2, 2, 2, 2},
-		{12,12,12,12,12, 0, 0, 0, 2, 2, 2, 2},
-		{12,12,12,12,12, 0, 0, 0,12,12,12,12,12},
+		{12,12,12,12,12,19,19,19,19,19,19,19,19},
+		{12,12,12,12,12,19,11,19, 2, 2, 2, 2},
+		{12,12,12,12,12,19,19,19, 2, 2, 2, 2},
+		{12,12,12,12,12,19,19,19,12,12,12,12,12},
 		{12,12,12,12,12, 2, 3, 2,12,12,12,12,12},
 		{ 3, 2, 3, 2, 3, 2, 3, 2,12,12,12,12,12},
 		{ 3, 2, 3, 2, 3, 2, 3, 2,12,12,12,12,12},
 		{ 3, 2, 3, 2, 3, 2, 3, 2,12,12,12,12,12},
+	},
+	floorOffsetVector = {
+		{-16,-16,-16,-16,-16,-16,-16,-16,-16,-16,-16,-16,-16},
+		{-16,-16,-16,-16,-16,-32,-48,-16,-16,-16,-16,-16},
+		{-16,-16,-16,-16,-16,-32,-32,-16,-16,-16,-16,-16},
+		{-16,-16,-16,-16,-16,-32,-32,-16,-16,-16,-16,-16,-16},
+		{-16,-16,-16,-16,-16,-16,-16,-16,-16,-16,-16,-16,-16},
+		{-16,-16,-16,-16,-16,-16,-16,-16,-16,-16,-16,-16,-16},
+		{-16,-16,-16,-16,-16,-16,-16,-16,-16,-16,-16,-16,-16},
+		{-16,-16,-16,-16,-16,-16,-16,-16,-16,-16,-16,-16,-16},
+	},
+	roofOffsetVector = {
+		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{ 0, 0, 0, 0, 0,16, 0, 0, 0, 0, 0, 0},
+		{ 0, 0, 0, 0, 0,16,16, 0, 0, 0, 0, 0},
+		{ 0, 0, 0, 0, 0,16,16, 0, 0, 0, 0, 0, 0},
+		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	},
 	eastVector = {
 		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -235,8 +255,19 @@ abyssintro = {
 	},
 }
 
+--[[for i = 1, #debugroom.roofOffsetVector do
+	for j = 1, #debugroom.roofOffsetVector[i] do
+		debugroom.roofOffsetVector[i][j] = debugroom.roofOffsetVector[i][j] + 16
+	end
+end
+for i = 1, #debugroom.floorOffsetVector do
+	for j = 1, #debugroom.floorOffsetVector[i] do
+		debugroom.floorOffsetVector[i][j] = debugroom.floorOffsetVector[i][j] - 16
+	end
+end]]
+
 testroom = debugroom
-Plush.setMap(testroom.wallsVector, testroom.roofVector, testroom.floorVector, imageVector, testroom.eastVector, testroom.northVector)
+Plush.setMap(testroom.wallsVector, testroom.roofVector, testroom.floorVector, testroom.roofOffsetVector, testroom.floorOffsetVector, imageVector, testroom.eastVector, testroom.northVector)
 Plush.setRenderDistance(testroom.renderDistance)
 Plush.fog(testroom.fogColour[1], testroom.fogColour[2], testroom.fogColour[3])
 Plush.setFov(90)
@@ -327,8 +358,8 @@ while not Metal.checkClose() do
 	if (accuracy < 1) then
 		accuracy = 1
 	end
-	if (accuracy > 2) then
-		accuracy = 2
+	if (accuracy > 3) then
+		accuracy = 3
 	end
 	if not (Plush.getAccuracy() == Winter.round(accuracy, 0)) then
 		alatch = false
@@ -338,7 +369,8 @@ while not Metal.checkClose() do
 	if (alatch == false) then
 		Plush.raycast(WINTER_FRAMEBUFFER, threads)
 		alatch = true
-		Plush.dither(WINTER_FRAMEBUFFER, 12.5, false)
+		--Plush.dither(WINTER_FRAMEBUFFER, 12.5, false)
+		Plush.bilinearSolid(WINTER_FRAMEBUFFER)
 	end
 
 	Metal.renderImage(WINTER_FRAMEBUFFER)
