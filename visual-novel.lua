@@ -1,4 +1,4 @@
-Render.spawnWindow(WINTER_SCREEN_X, WINTER_SCREEN_Y, '<game name> | WinterMoon Engine v<wintermoon version> | BETA')
+Render.spawnWindow(WINTER_SCREEN_X, WINTER_SCREEN_Y, '<game name> | WinterMoon Engine ' .. WINTER_ENGINE_VERSION .. ' | ' .. WINTER_ENGINE_POSTFIX)
 Render.setup2D(0, WINTER_SCREEN_X, 0, WINTER_SCREEN_Y)
 
 WINTER_RENDER_S1  = {text = 'nil',}

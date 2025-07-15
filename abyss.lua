@@ -45,7 +45,7 @@ function Winter.saveGame(slot)
 	file:close()
 end
 
-Render.spawnWindow(WINTER_SCREEN_X, WINTER_SCREEN_Y, 'Project Abyss engine port | WinterMoon Engine v<wintermoon version> | BETA')
+Render.spawnWindow(WINTER_SCREEN_X, WINTER_SCREEN_Y, 'Project Abyss engine port | WinterMoon Engine ' .. WINTER_ENGINE_VERSION .. ' | ' .. WINTER_ENGINE_POSTFIX)
 Render.setup2D(0, WINTER_SCREEN_X, 0, WINTER_SCREEN_Y)
 
 mapdebug = true --disable story access checks
@@ -1094,22 +1094,22 @@ while not Render.checkClose() do
 			tileY = Winter.round((playery + 8) / 16, 0)
 			if (eastVector[tileX][tileY] == doorclosed) then
 				eastVector[tileX][tileY] = doorbuffer
-				Plush.setMap(wallsVector, roofVector, floorVector, imageVector, eastVector, northVector)
+				Plush.setMap(wallsVector, roofVector, floorVector, roofOffsetVector, floorOffsetVector, imageVector, eastVector, northVector)
 			end
 			if (northVector[tileX][tileY] == doorclosed) then
 				northVector[tileX][tileY] = doorbuffer
-				Plush.setMap(wallsVector, roofVector, floorVector, imageVector, eastVector, northVector)
+				Plush.setMap(wallsVector, roofVector, floorVector, roofOffsetVector, floorOffsetVector, imageVector, eastVector, northVector)
 			end
 			for i = 1, #eastVector do
 				for j = 1, #eastVector[i] do
 					if (i ~= tileX) and (j ~= tileY) then
 						if (eastVector[i][j] == doorbuffer) then
 							eastVector[i][j] = doorclosed
-							Plush.setMap(wallsVector, roofVector, floorVector, imageVector, eastVector, northVector)
+							Plush.setMap(wallsVector, roofVector, floorVector, roofOffsetVector, floorOffsetVector, imageVector, eastVector, northVector)
 						end
 						if (northVector[i][j] == doorbuffer) then
 							northVector[i][j] = doorclosed
-							Plush.setMap(wallsVector, roofVector, floorVector, imageVector, eastVector, northVector)
+							Plush.setMap(wallsVector, roofVector, floorVector, roofOffsetVector, floorOffsetVector, imageVector, eastVector, northVector)
 						end
 					end
 				end

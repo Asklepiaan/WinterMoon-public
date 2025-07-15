@@ -1,4 +1,4 @@
-Metal.spawnWindow(WINTER_SCREEN_X, WINTER_SCREEN_Y, '<game name> | WinterMoon Engine v<wintermoon version> | BETA')
+Metal.spawnWindow(WINTER_SCREEN_X, WINTER_SCREEN_Y, '<game name> | WinterMoon Engine ' .. WINTER_ENGINE_VERSION .. ' | ' .. WINTER_ENGINE_POSTFIX)
 framecolour = {255, 0, 255}
 drawFrame = true
 frames = 0
@@ -66,6 +66,26 @@ debugroom = {
 		{ 3, 2, 3, 2, 3, 2, 3, 2,12,12,12,12,12},
 		{ 3, 2, 3, 2, 3, 2, 3, 2,12,12,12,12,12},
 		{ 3, 2, 3, 2, 3, 2, 3, 2,12,12,12,12,12},
+	},
+	floorOffsetVector = {
+		{  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+		{  0,  0,  0,  0,  0, 16, 32,  0,  0,  0,  0,  0},
+		{  0,  0,  0,  0,  0, 48, 48,  0,  0,  0,  0,  0},
+		{  0,  0,  0,  0,  0, 48, 64,  0,  0,  0,  0,  0,  0},
+		{  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+		{  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+		{  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+		{  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+	},
+	roofOffsetVector = {
+		{  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+		{  0,  0,  0,  0,  0, 16,  0,  0,  0,  0,  0,  0},
+		{  0,  0,  0,  0,  0, 16, 16,  0,  0,  0,  0,  0},
+		{  0,  0,  0,  0,  0, 16, 48,  0,  0,  0,  0,  0,  0},
+		{  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+		{  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+		{  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+		{  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
 	},
 	eastVector = {
 		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -235,8 +255,8 @@ abyssintro = {
 	},
 }
 
-testroom = abyssintro
-Plush.setMap(testroom.wallsVector, testroom.roofVector, testroom.floorVector, imageVector, testroom.eastVector, testroom.northVector)
+testroom = debugroom
+Plush.setMap(testroom.wallsVector, testroom.roofVector, testroom.floorVector, testroom.roofOffsetVector, testroom.floorOffsetVector, imageVector, testroom.eastVector, testroom.northVector)
 Plush.setRenderDistance(testroom.renderDistance)
 Plush.fog(testroom.fogColour[1], testroom.fogColour[2], testroom.fogColour[3])
 Plush.setFov(90)
@@ -246,7 +266,6 @@ playerx = testroom.startx
 playery = testroom.starty
 direction = Plush.getPlayerRotation() / 0.0174533
 angle = 90
-threads = 8
 alatch = false
 accuracy = 2
 
