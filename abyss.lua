@@ -1,3 +1,5 @@
+WINTER_FRAMERATE = 1000 / 75
+
 function loadscreen()
 	Winter.cleanup()
 	renderQueue = {{
@@ -45,6 +47,12 @@ function Winter.saveGame(slot)
 	file:close()
 end
 
+function statUpdate()
+	renderQueue[2].y = 544 * (health / 500)
+	renderQueue[3].y = 544 * (mana / 500)
+	renderQueue[4].y = 544 * (stamina / 500)
+end
+
 Render.spawnWindow(WINTER_SCREEN_X, WINTER_SCREEN_Y, 'Project Abyss engine port | WinterMoon Engine ' .. WINTER_ENGINE_VERSION .. ' | ' .. WINTER_ENGINE_POSTFIX)
 Render.setup2D(0, WINTER_SCREEN_X, 0, WINTER_SCREEN_Y)
 
@@ -75,37 +83,6 @@ clear = {0, 0, 0, 0, 255}
 pink = {255, 128, 255, 255}
 ugreen = {0, 255, 116, 255}
 framecolour = white
-
---[[function stats()
-	Graphics.fillRect(0, 60, 0, 544, black)
-	Graphics.fillRect(0, 20, 0, 544 * (health / 500), orange)
-	Graphics.fillRect(20, 40, 0, 544 * (mana / 500), sblue)
-	Graphics.fillRect(40, 60, 0, 544 * (stamina / 500), dgreen)
-	Graphics.drawImage(0, 0, bbar)
-	if (ohp ~= health) then
-		if (health > 0) then
-			lightc = red
-		end
-		if (health > 100) then
-			lightc = orange
-		end
-		if (health > 200) then
-			lightc = yellow
-		end
-		if (health > 300) then
-			lightc = green
-		end
-		if (health > 400) then
-			lightc = sblue
-		end
-		statup = statup - 1
-		if (statup == 0) then
-			Controls.setLightbar(0, lightc)
-			statup = 120
-		end
-		ohp = health
-	end
-end]]
 
 meiyro43 = {Font.loadFont(rompath .. '/fonts/Meiyro.ttf', 43), 0}
 meiyro25 = {Font.loadFont(rompath .. '/fonts/Meiyro.ttf', 25), 0}
@@ -153,6 +130,9 @@ ABYSS_RENDER_PLAYER_BAR = 12
 ABYSS_RENDER_LOCATOR    = 13
 ABYSS_RENDER_LENSE      = 14
 ABYSS_RENDER_STATUSBAR  = 15
+ABYSS_RENDER_STATS_BAR  = 16
+ABYSS_RENDER_STATUSBAR  = 17
+ABYSS_RENDER_STATUSBAR  = 18
 
 ABYSS_SET_DEBUG    = 0
 ABYSS_SET_METEOR   = 1
@@ -874,6 +854,42 @@ while not Render.checkClose() do
 		munknown = Render.loadPNG(rompath .. "/ui/unknown.png")
 
 		renderQueue = {
+			{identifier = ABYSS_RENDER_BLACK_BAR,
+				type = WINTER_IMAGE,
+				surface = Plush.createImage(60, 544, 0, 0, 0, 255),
+				layer = 1,
+				x = 0,
+				y = 0,
+				scale = 1.0,
+				rotation = 0.0
+			},
+			{identifier = ABYSS_RENDER_STATS_BAR,
+				type = WINTER_IMAGE,
+				surface = Plush.createImage(20, 544, 254, 85, 0, 255),
+				layer = 1,
+				x = 0,
+				y = 0,
+				scale = 1.0,
+				rotation = 0.0
+			},
+			{identifier = ABYSS_RENDER_STATS_BAR,
+				type = WINTER_IMAGE,
+				surface = Plush.createImage(20, 544, 0, 254, 254, 255),
+				layer = 1,
+				x = 20,
+				y = 0,
+				scale = 1.0,
+				rotation = 0.0
+			},
+			{identifier = ABYSS_RENDER_STATS_BAR,
+				type = WINTER_IMAGE,
+				surface = Plush.createImage(20, 544, 5, 150, 0, 255),
+				layer = 1,
+				x = 40,
+				y = 0,
+				scale = 1.0,
+				rotation = 0.0
+			},
 			{identifier = ABYSS_RENDER_PLAYER_BAR,
 				type = WINTER_IMAGE,
 				surface = nil,
@@ -982,10 +998,11 @@ while not Render.checkClose() do
 			input.key.r = WINTER_KEY_R
 			input.key.f = WINTER_KEY_F
 
+			statUpdate()
+
 			oldx = playerx
 			oldy = playery
 			playerx, playery = Plush.getPlayerPosition()
-			print('\nplayerx: ' .. playerx .. '\ntargetx: ' .. targetx .. '\nplayery: ' .. playery .. '\ntargety: ' .. targety .. '\ndirection: ' .. direction .. '\ntargeta: ' .. targeta .. '\nmovingdist: ' .. movingdist .. '\nmovingdirection: ' .. movingdirection)
 			if (mlatch == true) then
 				if not (targetx == playerx) or not (targety == playery) or not (targeta == direction) then
 					accuracy = accuracy + 1

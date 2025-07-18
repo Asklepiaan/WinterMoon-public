@@ -328,6 +328,7 @@ Plush.setRenderDistance(testroom.renderDistance)
 Plush.fog(testroom.fogColour[1], testroom.fogColour[2], testroom.fogColour[3])
 Plush.setFov(90)
 Plush.setPlayerHeight(5, 7)
+WINTER_FRAMERATE = 1000 / 75
 
 playerx = testroom.startx
 playery = testroom.starty
