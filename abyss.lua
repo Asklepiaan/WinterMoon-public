@@ -148,6 +148,12 @@ overlay = {
 		set = ABYSS_SET_DEBUG,
 		story = { 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000},
 	},
+	[0] = { x = 9999, y = 9999, name = 'you shouldnt be able to see this, this place is shown specifically because of a bug. if you can recreate it please contact asklepian', direction = 1, offset = 85,
+		blight = false, docks = false, inn = false, dungeon = false, shop = false, bank = false, guild = false, heal = false,
+		desc = 'you shouldnt be able to see this, this place is shown specifically because of a bug. if you can recreate it please contact asklepian',
+		set = ABYSS_SET_DEBUG,
+		story = { 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000},
+	},
 	[1] = { x = 179, y = 363, name = 'Meteor Island', direction = 1, offset = 0,
 		blight = false, docks = false, inn = false, dungeon = true, shop = false, bank = false, guild = false, heal = false,
 		desc = 'A small island that formed after a rock fell from the sky hundreds of years ago.',
@@ -1015,14 +1021,24 @@ while not Render.checkClose() do
 			oldx = playerx
 			oldy = playery
 			playerx, playery = Plush.getPlayerPosition()
+			if (debugger) then
+				debugentries = debugentries + 1
+				debuglog = debuglog .. debugentries ..': playerx: ' .. playerx .. '\n   targetx: ' .. targetx .. '\n   playery: ' .. playery .. '\n   targety: ' .. targety .. '\n   direction: ' .. direction .. '\n   targeta: ' .. targeta .. '\n   movingdist: ' .. movingdist .. '\n   movingdirection: ' .. movingdirection .. '\n'
+			end
 			if (mlatch == true) then
-				if not (targetx == playerx) or not (targety == playery) or not (targeta == direction) then
+				if (math.abs(targetx - playerx) > 1) or (math.abs(targety - playery) > 1) or (targeta ~= direction) then
 					accuracy = accuracy + 1
 					alatch = false
 					Plush.movePlayer(movingdist, movingforward)
 					direction = direction + movingdirection
 				else
-					mlatch = flase
+					playerx = targetx
+					playery = targety
+					Plush.setPlayerPosition(targetx, targety)
+					mlatch = false
+					movingdirection = 0
+					targeta = direction
+					movingdist = 0
 				end
 				if (displaytext) then
 					mlatch = true
@@ -1086,14 +1102,17 @@ while not Render.checkClose() do
 					if (eventVector[tileX][tileY]) then
 						if (eventVector[tileX][tileY] > 0) then
 							mlatch = true
-							print(eventVector[tileX][tileY], eventTable[eventVector[tileX][tileY]])
+							if (debugger) then
+								debugentries = debugentries + 1
+								debuglog = debuglog .. debugentries ..': event id ' .. eventVector[tileX][tileY] .. ' hit\n   lua code block:\n ' .. eventTable[eventVector[tileX][tileY]] .. '\n'
+							end
 							load(eventTable[eventVector[tileX][tileY]])()
 						end
 					end
 				end
-				targetx = Winter.round((targetx + 8) / 16, 0) * 16 - 8
-				targety = Winter.round((targety + 8) / 16, 0) * 16 - 8
-				targeta = Plush.round90(targeta)
+				targetx = Plush.round90(targetx + 2, 16) - 8
+				targety = Plush.round90(targety + 2, 16) - 8
+				targeta = Plush.round90(targeta, 90)
 			end
 			if (input.key.r) then
 				angle = angle - 5
@@ -1163,18 +1182,23 @@ while not Render.checkClose() do
 			end
 
 			if (enemy == 0) then
-				renderQueue[3].surface = mdanger
+				renderQueue[7].surface = mdanger
+				dontclear = 0
 			elseif (enemy == 1) then
-				renderQueue[3].surface = mwarn
+				renderQueue[7].surface = mwarn
+				dontclear = 1
 			elseif (enemy == 2) then
-				renderQueue[3].surface = msafe
+				renderQueue[7].surface = msafe
+				dontclear = 2
 			elseif (enemy > 2) then
-				renderQueue[3].surface = mpeaceful
+				renderQueue[7].surface = mpeaceful
+				dontclear = 3
 			end
 			if (ehide == 1) then
-				renderQueue[3].surface = munknown
+				renderQueue[7].surface = munknown
+				dontclear = 4
 			end
-			renderQueue[6].x = 901 + itorch
+			renderQueue[10].x = 901 + itorch
 
 			if (alatch == false) then
 				Plush.raycast(WINTER_FRAMEBUFFER, threads)
@@ -1192,7 +1216,7 @@ while not Render.checkClose() do
 					alatch = false
 					Render.killImage(textsurface)
 					textsurface = nil
-					Ruby.runScript("debugapprove = \"approved\"")
+					load(Ruby.runScript(approve))()
 				end
 				if (input.key.x) then
 					displaytext = false
@@ -1200,9 +1224,10 @@ while not Render.checkClose() do
 					alatch = false
 					Render.killImage(textsurface)
 					textsurface = nil
-					Ruby.runScript("debugapprove = \"did not approve\"")
+					load(Ruby.runScript(disapprove))()
 				end
 			end
+
 			Render.renderImage(WINTER_FRAMEBUFFER, 0, 0, 1.0, 0.0)
 			Render.killTexture(WINTER_FRAMEBUFFER)
 			Render.forceUpdate()
@@ -1223,13 +1248,39 @@ while not Render.checkClose() do
 				print(debuglog)
 			end
 		end
-		Render.killImage(mdanger)
-		Render.killImage(mwarn)
-		Render.killImage(msafe)
-		Render.killImage(mpeaceful)
-		Render.killImage(munknown)
-		Render.killImage(textbox)
+		if (Plush.checkImage(mdanger)) and not (dontclear == 0) then
+			Render.killImage(mdanger)
+			mdanger = nil
+		end
+		if (Plush.checkImage(mwarn)) and not (dontclear == 1) then
+			Render.killImage(mwarn)
+			mwarn = nil
+		end
+		if (Plush.checkImage(msafe)) and not (dontclear == 2) then
+			Render.killImage(msafe)
+			msafe = nil
+		end
+		if (Plush.checkImage(mpeaceful)) and not (dontclear == 3) then
+			Render.killImage(mpeaceful)
+			mpeaceful = nil
+		end
+		if (Plush.checkImage(munknown)) and not (dontclear == 4) then
+			Render.killImage(munknown)
+			munknown = nil
+		end
+		if (Plush.checkImage(textbox)) then
+			Render.killImage(textbox)
+			textbox = nil
+		end
 		Winter.cleanup()
+		if (imageVector) then
+			for i = 1, #imageVector do
+				if (imageVector[i - 1]) then
+					Render.killImage(imageVector[i - 1])
+					imageVector[i - 1] = nil
+				end
+			end
+		end
 
 --[[Font.setPixelSizes(meiyro, 25)
 moving = 0
