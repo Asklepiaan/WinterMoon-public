@@ -839,19 +839,24 @@ while not Render.checkClose() do
 	elseif (st == ABYSS_DUNGEON) then
 		Winter.cleanup()
 		Winter.clearButtons()
-		--file = io.open(rompath .. '/scripts/abyssdungeons/' .. location .. 'map0.lua')
-		--if (file) then
-		--	file:close()
-		--	dofile(rompath .. '/scripts/abyssdungeons/' .. location .. 'map0.lua')
-		--else
+		file = io.open(rompath .. '/scripts/abyssdungeons/' .. location .. 'map0.lua')
+		if (file) then
+			file:close()
+			dofile(rompath .. '/scripts/abyssdungeons/' .. location .. 'map0.lua')
+		else
 			dofile(rompath .. '/scripts/abyssdungeons/0map0.lua')
-		--end
+		end
 
 		mdanger = Render.loadPNG(rompath .. "/ui/peaceful.png")
 		mwarn = Render.loadPNG(rompath .. "/ui/safe.png")
 		msafe = Render.loadPNG(rompath .. "/ui/warn.png")
 		mpeaceful = Render.loadPNG(rompath .. "/ui/danger.png")
 		munknown = Render.loadPNG(rompath .. "/ui/unknown.png")
+
+		textbox = Plush.createImage(480, 272, white[1], white[2], white[3], white[4])
+		tmp1 = Plush.createImage(476, 268, black[1], black[2], black[3], black[4])
+		Render.blitImage(textbox, tmp1, 2, 2, false, 1.0, 0.0)
+		Render.killImage(tmp1)
 
 		renderQueue = {
 			{identifier = ABYSS_RENDER_BLACK_BAR,
@@ -964,6 +969,7 @@ while not Render.checkClose() do
 		movingforward = true
 		movingdist = 0
 		movingdirection = 0
+		displaytext = false
 
 		loop = true
 		while (loop) and not Render.checkClose() do
@@ -985,6 +991,9 @@ while not Render.checkClose() do
 			onput.key.e = WINTER_KEY_E
 			onput.key.r = WINTER_KEY_R
 			onput.key.f = WINTER_KEY_F
+			onput.key.space = WINTER_KEY_SPACE
+			onput.key.z = WINTER_KEY_Z
+			onput.key.x = WINTER_KEY_X
 			Render.updateInput()
 			input.mouse.x = WINTER_MOUSE_X
 			input.mouse.y = WINTER_MOUSE_Y
@@ -997,6 +1006,9 @@ while not Render.checkClose() do
 			input.key.e = WINTER_KEY_E
 			input.key.r = WINTER_KEY_R
 			input.key.f = WINTER_KEY_F
+			input.key.space = WINTER_KEY_SPACE
+			input.key.z = WINTER_KEY_Z
+			input.key.x = WINTER_KEY_X
 
 			statUpdate()
 
@@ -1011,6 +1023,9 @@ while not Render.checkClose() do
 					direction = direction + movingdirection
 				else
 					mlatch = flase
+				end
+				if (displaytext) then
+					mlatch = true
 				end
 			else
 				accuracy = accuracy - 1
@@ -1060,6 +1075,21 @@ while not Render.checkClose() do
 					targeta = direction + 90
 					movingdist = 0
 					mlatch = true
+				elseif (input.key.space) then
+					targetx, targety = playerx, playery
+					movingdirection = 0
+					targeta = direction
+					movingdist = 0
+					ix, iy = Plush.dontMovePlayer(16, true)
+					tileX = Winter.round((ix + 8) / 16, 0)
+					tileY = Winter.round((iy + 8) / 16, 0)
+					if (eventVector[tileX][tileY]) then
+						if (eventVector[tileX][tileY] > 0) then
+							mlatch = true
+							print(eventVector[tileX][tileY], eventTable[eventVector[tileX][tileY]])
+							load(eventTable[eventVector[tileX][tileY]])()
+						end
+					end
 				end
 				targetx = Winter.round((targetx + 8) / 16, 0) * 16 - 8
 				targety = Winter.round((targety + 8) / 16, 0) * 16 - 8
@@ -1153,6 +1183,26 @@ while not Render.checkClose() do
 				Plush.bilinearSolid(WINTER_FRAMEBUFFER)
 			end
 			Winter.renderStack()
+			if (displaytext) then
+				Render.blitImage(WINTER_FRAMEBUFFER, textbox, 240, 136, false, 1.0, 0.0)
+				Render.blitImage(WINTER_FRAMEBUFFER, textsurface, 242, 138, true, 1.0, 0.0)
+				if (input.key.z) then
+					displaytext = false
+					mlatch = false
+					alatch = false
+					Render.killImage(textsurface)
+					textsurface = nil
+					Ruby.runScript("debugapprove = \"approved\"")
+				end
+				if (input.key.x) then
+					displaytext = false
+					mlatch = false
+					alatch = false
+					Render.killImage(textsurface)
+					textsurface = nil
+					Ruby.runScript("debugapprove = \"did not approve\"")
+				end
+			end
 			Render.renderImage(WINTER_FRAMEBUFFER, 0, 0, 1.0, 0.0)
 			Render.killTexture(WINTER_FRAMEBUFFER)
 			Render.forceUpdate()
@@ -1178,6 +1228,7 @@ while not Render.checkClose() do
 		Render.killImage(msafe)
 		Render.killImage(mpeaceful)
 		Render.killImage(munknown)
+		Render.killImage(textbox)
 		Winter.cleanup()
 
 --[[Font.setPixelSizes(meiyro, 25)

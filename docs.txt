@@ -1,0 +1,621 @@
+Development Tips
+	My game looks bad
+		Hire an artist or try swapping out the default assets
+		Menu and UI are stored as .png files while fonts use .ttf
+		If your UI doesnt line up with your text you can adjust padding with the padding variable in pages.rb and font[2] variable in graphics.lua
+	My character heights dont fit properly
+		The camera is by default 6ft above the ground and has a 5'3"x2'11" view window
+		Character feet position is 6'3" below the default height
+		Size your characters with a 1inch^2 = 15.41px^2 with no padding and your characters should fit properly
+	My game crashes my gpu when running with metal
+		The metal window implimentation used here has 0 protections against the user not reading the manual. You must add a delay after rendering or it will eat up all your gpu resources, including those used by the os to render your desktop.
+	I want to use a function that only exists in one rendering system but want my game to run in both renderers
+		If a function doesnt exist in this documentation then calling it will do nothing, for example, you can safely use Render.setup2D() with the metal renderer and it will not affect anything as it is only needed when rendering with opengl.
+	The minimum specs are way higher than my machine!!
+		The minimum specs are the minimum tested specs, Asklepian does not own any low spec intel macs capable of running os 11. Your machine will probably run your game just fine.
+	The 3d camera is at the wrong height
+		Plush.setPlayerHeight(feet + (inches / 12))
+	The 3d renderer runs very slow
+		Try changing the number of threads with Plush.threads(), the default threadding is 8 threads.
+		This will also change the speed of Render.blitImage() which can result in faster speeds than using Render.renderImage() with GLFW.
+	I want to redefine a function
+		The functions under "System facing functions" cannot be redefined safely, "User facing functions" can be redefined safely.
+		If a function is not labelled it can be assumed to by a system function.
+
+Minimum Specs
+	macOS
+		11.0.1
+		Apple A12Z or Intel Xeon
+		Apple A12Z or Radeon Vega Pro II
+		90mb free ram
+		40mb free space HDD, if lodepng in use ssd required and ramdisk recommended
+
+Compiler Notes
+	By default Metal+CoreGraphics and Appkit are used for rendering, these can be changed with `make include-glfw all` or `make include-lodepng all`, this is not recommended as the native macos code is very fast compared to the generalised alternative options
+	Building from macos 11 and higher will result in a universial binary being built and combined together, if built in debug mode 2 extra binaries will be added to the distribution package.
+		WinterMoon:     arm64 x86_64 universial binary
+		WinterMoon-a12: arm64 8.3A for apple silicon
+		WinterMoon-x64: intel amd64 for intel macs
+	For unknown reasons the intel build runs faster than native arm in some cases so you may opt to only distribute this.
+	Building on older os version has not been tested, support will not be given as you shouldnt have access to the source code anyways.
+
+Compiler Variables
+	USE_
+		GLFW_WINDOW	use glfw for window management
+		MACOS_
+			AUDIO	use native macos code for audio
+			FONT	use native macos code for text rendering
+			PNG		use native macos code for png processing for 5-6x faster than lodepng, recommend using this when possible
+			WINDOW	use native macos code for window management
+		LODE_PNG	use lodepng for png processing
+
+Lua Notes
+	The Lua VM only has access to 300mb of ram.
+
+Ruby Notes
+
+Lua Functions
+	Winter.
+											System facing functions
+		getGlobalTime()						return the number of milliseconds since the programme started
+		getClock()							return the number of milliseconds since it was last called, or since the programme started
+		sleep(time)							pause execution for [time] milliseconds
+		checkButton(x, y)					check a position on the screen and return the ID of a pressed button, or nil
+		pushButton(x, x2, y, y2, id)		push a button to the buttons vector
+		clearButtons()						clear the buttons table
+		checksum(string)					return the calculated the checksum of a provided string
+		getPath() 							retrun a string containing the current working path
+											User facing functions
+		translateRunes(string)				return a string converted to Azmyrian rune encoding
+		translateAnglish(string)			return a string in Anglish
+		processRunes(string)				check a sting if it needs processing then strip tags and pass it to Winter.translateRunes()
+		processAnglish(string)				check a sting if it needs processing then strip tags and pass it to Winter.translateAnglish()
+		processGender(string)				return a string with auto pronoun conversion applied
+		capture(string, bool)				run a command on the os terminal and return the output, if bool is false clean up the output
+		hexDump(string)						convert a string to hex for easy debugging
+		jsonEncode(table)					convert a lua table to a json string for easy debugging
+		round(number, decimals)				round a number to a length of decmial places
+		clamp(number, minimum, maximum)		clamp a number to stay within a provided range
+		findID(table, id)					find a position in a table that contains id at .identifier, return -1 if none are found
+		between(number, minimum, maximum)	return true if a number is between 2 numbers
+		middle(number, number)				return the middle x position of 2 numbers
+		saveGame(number)					save the current progess to a specified slot
+		cleanup()							empty the render queue
+		renderStack()						render the renderQueue
+
+	Audio.
+		open(string, id)				open audio file, return audio index and success boolean
+		play(number, boolean, number)	play audio at specified index and timestamp, boolean loops, return success boolean and track length
+		pause(number)					pause audio at a specified index, return progress
+		free()							clear a track index
+		clear()							clear audio vector
+
+	Ruby.					!!!Memory management not handled by Lua!!!
+		startup()			start the mruby vm
+		kill()				kill the mruby vm
+		runScript(string)	return the output of a ruby script
+
+	Font.										!!Memory management not handled by lua!!
+		resizeFont(font, size)					change the size of a font
+		killFont(font)							free a font from memory
+		loadFont(path, size)					load a font to memory
+		renderText(string, font, r, g, b, a)	render text and return it as textureless image data
+
+	Plush.																	!!!Memory management not handled by Lua!!!
+																			System facing functions
+		project(x, y, z, focus)												convert a 3d point to a 2d point
+		raycast(PlushImage)													render a scene with raycasts
+		setPlayerHeight(feet)												set the 3d camera height
+		getPlayerHeight()													get the 3d camera height
+		setPlayerPosition(x, y)												set the player 3d position
+		getPlayerPosition()													get the player 3d position
+		setPlayerRotation(rad)												set the camera rotation (-left +right)
+		getPlayerRotation()													return the camera rotation in radians
+		setRenderDistance(number)											set the render distance
+		getRenderDistance()													get the render distance
+		setTilt(rad)														set the camera tilt (-down +up)
+		getTilt()															get the camera tilt in radians
+		setMap(wall, roof, floor, roofOff, floorOff, textures, east, north)	set the raycast scene
+		movePlayer(distance, x, y)											move the player forward or backward if true, side to side if false
+		printImage(image, x, y)												print an image to the terminal
+		threads(number)														set the number of threads the engine can access
+		fog(r, g, b)														set the fog colour
+		setFov(degrees)														set the fov
+		getFov()															return the fov in degrees
+		setAccuracy(number)													set the raycast accuracy
+		getAccuracy()														get the raycast accuracy
+		dither(image, range, upscale)										add noise to an image
+		skew(srcImage, tgtImage, tlx, tly, trx, try, blx, bly, brx, bry)	fast transform an image onto a buffer
+		sortVertex(faces, camX, camY, camZ, yaw, tilt, roll)				return a sorted table of visible faces
+		bilinear(image, scale)												upsacle an image with bilinear filtering
+		trimImage(image, width, height)										trim an image down to a specified size
+		bilinearSolid(image)												apply bilinear filtering to an image without resizing
+		movePlayer(distance, x, y)											get the location if the player were to move forward or backward if true, side to side if false
+		createImage(width, height, red, green, blue, aether)				create a textureless PlushImage
+																			User facing functions
+		checkWall(x, y)														check if a position is in a wall or not
+		createCube(x, y, sx, sy, z)											create a 3d cube
+		createFace(x, y, sx, sy, ox, oy, direction, horizontal)				create a 3d face
+		round90(number)														round a number to its nearest 90
+
+	Metal.														!!!Memory management not handled by Lua!!!
+		saveImage(path, image)									save an image to disk
+		blitImage(target, source, x, y, blend, scale, rotation)	render an image to another image
+		renderImage(image)										render an image to the window
+		transformImage(image, x1, x2, x3, x4, y1, y2, y3, y4)	perspective transform an image into a new buffer
+		modifyImage(image, node, r, g, b, a)					apply image pseudo shaders to an image
+		mirrorImage(image, bool)								mirror an image, y axis if false, x axis if true
+		killImage(image)										free an image from memory
+		imageSize(image)										return the width and height of an image
+		loadPNG(path)											return an image and the height, width of the image
+		updateInput()											push the current HID state, this does not return any data but sets several varaibles in the stack
+		forceUpdate()											force the window up update
+		getTitle()												return the window title
+		getWindow()												return an image of the current window state
+		setTitle(string)										set a new title for the window
+		clearBuffer(r, g, b)									empty the framebuffer and fill it with a colour
+		checkClose()											return true if the window should close
+		killWindow()											kill the window
+		spawnWindow(x, y, string)								create the window, this window cannot be resized and only one can exist at a time
+
+	GLFW.														!!!Memory management not handled by Lua!!!
+		saveImage(path, image)									save an image to disk
+		blitImage(target, source, x, y, blend, scale, rotation)	render an image to another image
+		renderImage(image, x, y, scale, rotation)				render an image to the window and create a gpu texture if it doesnt exist
+		transformImage(image, x1, x2, x3, x4, y1, y2, y3, y4)	perspective transform an image into a new textureless buffer
+		modifyImage(image, node, r, g, b, a)					apply image pseudo shaders to a textureless image
+		mirrorImage(image, bool)								mirror a textureless image, y axis if false, x axis if true
+		killImage(image)										free an image and texture from memory
+		killTexture(image)										free only the gpu texture from memory
+		imageSize(image)										return the width and height of an image
+		loadPNG(path)											return a textureless image and the height, width of the image
+		updateInput()											push the current HID state, this does not return any data but sets several varaibles in the stack
+		forceUpdate()											force the window up update
+		exchangeBuffer()										swap the render buffers
+		setup2D(x1, x2, y1, y2)									adjust renderer to render in pseudo2D
+		getTitle()												return the window title
+		getWindow()												return a textureless image of the current framebuffer
+		setTitle(string)										set a new title for the window
+		clearBuffer(r, g, b, a)									empty the framebuffer and fill it with a colour
+		checkClose()											return true if the window should close
+		killWindow()											kill the window
+		spawnWindow(x, y, string)								create the window, this window cannot be resized and only one can exist at a time
+
+Lua Variables
+	Render					rendering functions table, this is automatically determined by the engine and filled in with copies of GLFW or metal
+	Metal					quartz rendering functions table
+	GLFW					glfw rendering functions table
+		_ENABLED			bool to check if GLFW functions exist
+	QUARTZ_ENABLED			bool to check if Quartz functions exist
+	METAL_ENABLED			bool to check if metal functions exist
+	Ruby					mruby functions table
+	Winter					wintermoon functions table
+	Font					font functions table
+	Audio					audio functions table
+	Plush					plush rendering functions table
+	debugger				bool to enable debug mode, debug mode functions may change or cease functioning with different releases
+	checksumBypass			bool to bypass savedata security
+	WINTER_
+		FRAMEBUFFER			preloaded 960x544px 0,0,0,0 image to use as a framebuffer in metal renderer
+		SCRIPT				name of the startup script, defaults to visual-novel
+		SCREEN_
+			Y				screen y size
+			X				screen x size
+			CULL_
+				FAR			screen long distance culling
+				NEAR		screen near distance culling
+		PROCESSOR_NAME		string with the current cpu name
+		OS_
+			PLATFORM		string with the current cpu architecture
+			VERSION			string with the current os version
+		ENGINE_
+			VERSION			string with the engine version
+			POSTFIX			string with the engine postfix
+		FRAMERATE			number with the target framerate
+		FEMALE				bool to tell if the player is female
+		AUDIO_
+			OFFSET			audio start offset
+			PLAYING			bool if audio started successfully
+		KEY_
+			RETURN			bool to check if a key is pressed
+			UP				bool to check if a key is pressed
+			DOWN			bool to check if a key is pressed
+			LEFT			bool to check if a key is pressed
+			RIGHT			bool to check if a key is pressed
+			A				bool to check if a key is pressed
+			B				bool to check if a key is pressed
+			C				bool to check if a key is pressed
+			D				bool to check if a key is pressed
+			E				bool to check if a key is pressed
+			F				bool to check if a key is pressed
+			G				bool to check if a key is pressed
+			H				bool to check if a key is pressed
+			I				bool to check if a key is pressed
+			J				bool to check if a key is pressed
+			K				bool to check if a key is pressed
+			L				bool to check if a key is pressed
+			M				bool to check if a key is pressed
+			N				bool to check if a key is pressed
+			O				bool to check if a key is pressed
+			P				bool to check if a key is pressed
+			Q				bool to check if a key is pressed
+			R				bool to check if a key is pressed
+			S				bool to check if a key is pressed
+			T				bool to check if a key is pressed
+			U				bool to check if a key is pressed
+			V				bool to check if a key is pressed
+			W				bool to check if a key is pressed
+			X				bool to check if a key is pressed
+			Y				bool to check if a key is pressed
+			Z				bool to check if a key is pressed
+			1				bool to check if a key is pressed
+			2				bool to check if a key is pressed
+			3				bool to check if a key is pressed
+			4				bool to check if a key is pressed
+			5				bool to check if a key is pressed
+			6				bool to check if a key is pressed
+			7				bool to check if a key is pressed
+			8				bool to check if a key is pressed
+			9				bool to check if a key is pressed
+			0				bool to check if a key is pressed
+			BACK			bool to check if a key is pressed
+			DELETE			bool to check if a key is pressed
+			SPACE			bool to check if a key is pressed
+		MOUSE_
+			NIL				bool to check if a key is pressed
+			LEFT			bool to check if a key is pressed
+			MIDDLE			bool to check if a key is pressed
+			RIGHT			bool to check if a key is pressed
+			1				bool to check if a key is pressed
+			2				bool to check if a key is pressed
+			3				bool to check if a key is pressed
+			X				number to check the mouse X position
+			Y				number to check the mouse Y position, this is inverted compared to render position
+		TMP
+			0				system variable for user accessible data, initialised as the player username
+			1				system variable for user accessible data, initialised as a table of Apple cpu names and minimum core counts
+			2				system variable for user accessible data
+			3				system variable for user accessible data
+			4				system variable for user accessible data
+			5				system variable for user accessible data
+			6				system variable for user accessible data
+			7				system variable for user accessible data
+			8				system variable for user accessible data
+			9				system variable for user accessible data
+		RENDER_
+			TMP				temporary variable for render processor
+				2			temporary variable for render processor
+			1				render queue pointer for visual novel file access optimisation
+			2				render queue pointer for visual novel file access optimisation
+			3				render queue pointer for visual novel file access optimisation
+			4				render queue pointer for visual novel file access optimisation
+			5				render queue pointer for visual novel file access optimisation
+			6				render queue pointer for visual novel file access optimisation
+			7				render queue pointer for visual novel file access optimisation
+			8				render queue pointer for visual novel file access optimisation
+			9				render queue pointer for visual novel file access optimisation
+			10				render queue pointer for visual novel file access optimisation
+			11				render queue pointer for visual novel file access optimisation
+			12				render queue pointer for visual novel file access optimisation
+			13				render queue pointer for visual novel file access optimisation
+			S1				render queue pointer for visual novel file access optimisation
+			S2				render queue pointer for visual novel file access optimisation
+			S3				render queue pointer for visual novel file access optimisation
+			S4				render queue pointer for visual novel file access optimisation
+			S5				render queue pointer for visual novel file access optimisation
+			S6				render queue pointer for visual novel file access optimisation
+			S7				render queue pointer for visual novel file access optimisation
+			S8				render queue pointer for visual novel file access optimisation
+			S9				render queue pointer for visual novel file access optimisation
+			S10				render queue pointer for visual novel file access optimisation
+			S11				render queue pointer for visual novel file access optimisation
+			S12				render queue pointer for visual novel file access optimisation
+			S13				render queue pointer for visual novel file access optimisation
+			SKIP_PARALLAX	bool for visual novel file access optimisation
+			EXIT			logic node for exiting
+		WEATHER_			!!currently unused!!
+			LAYER			render layer for weather effect
+				_
+					IMAGE
+						1	temporary variable for weather effect optimisations
+						2	temporary variable for weather effect optimisations
+						3	temporary variable for weather effect optimisations
+						4	temporary variable for weather effect optimisations
+						5	temporary variable for weather effect optimisations
+					PATH
+						1	temporary variable for weather effect optimisations
+						2	temporary variable for weather effect optimisations
+						3	temporary variable for weather effect optimisations
+						4	temporary variable for weather effect optimisations
+						5	temporary variable for weather effect optimisations
+			CLEAR			clear weather effect pointer
+			LEAF			leaf weather effect pointer
+		GREYSCALE			image modification node for wintermoon rod optimised greyscale
+		INACTIVE			image modifiaction node for inactive character
+		COLOUR_
+			INVERT			image modification node for colour inversion, this will also invert colours in the aether channel even if fully transparent
+			FILL			image modification node for filling the colour, this will fill colours in the aether channel even if fully transparent
+		AETHER_
+			INVERT			image modification node for aether channel inversion, this will preserve colours in transparent spaces
+			CLEANUP			image modification node for removing aether channel, this will reveal colours hidden by the aether channel as those are not culled from memory prior, use WINTER_AETHER_FILL first to remove these
+			FILL			image modification node for filling in the aether channel, set rgb value to intended background colour
+			SET				image modification node to set nonzero aether channel values to a single uniform value
+		INACTIVE_
+			1				bool for visual novel render optimisation
+			2				bool for visual novel render optimisation
+			3				bool for visual novel render optimisation
+			4				bool for visual novel render optimisation
+		LAYER_
+			FRAMEBUFFER		pointer for a render layer
+			BACKGROUND		pointer for a render layer
+			CHARACTER		pointer for a render layer
+			FOREGROUND		pointer for a render layer
+			SUPERGROUND		pointer for a render layer
+		SKIP				render rule to do nothing
+		IMAGE				render rule to draw an image
+		TEXT				render rule to draw text
+			_SLIDE_
+				RIGHT		render rule to draw text 1 character at a time, sliding to the right
+				LEFT		render rule to draw text 1 character at a time, sliding to the left
+		CHARACTER
+			1				render rule and identifier to draw a character in the visual novel mode
+			2				render rule and identifier to draw a character in the visual novel mode
+			3				render rule and identifier to draw a character in the visual novel mode
+			4				render rule and identifier to draw a character in the visual novel mode
+		PARALLAX_UIFG		render rule to draw the foreground layer infront of the ui
+		BACKGROUND			render identifier for the background
+		INTERFACE			render identifier for the user interface
+		MESSAGE				render identifier for the message box
+		DATE				render identifier for the date
+		TIME				render identifier for the time
+		NAME				render identifier for the character name
+		TITLE				render identifier for the character title
+		LOCATION			render identifier for the location
+		REGION				render identifier for the region
+		WEATHER				render rule to enable weather
+		OPTION_
+			1				render identifier for dialogue options boxes
+			2				render identifier for dialogue options boxes
+			3				render identifier for dialogue options boxes
+		MENU_
+			MAIN			logic node for the main menu
+			PAUSE			logic node for the pause screen (not implimented)
+			SAVE			logic node for the save screen
+			OPTION			logic node for the options menu (not implimented)
+		GAME_
+			VISUAL_NOVEL	logic node for the visual novel render mode
+			TARGET			target logic node for the new game button
+			NEW				render identifier for the new game button
+			LOAD			render identifier for the load game button
+	fasle					bool to prevent typos from crashing the game
+	flase					bool to prevent typos from crashing the game
+	flse					bool to prevent typos from crashing the game
+	tre						bool to prevent typos from crashing the game
+	tue						bool to prevent typos from crashing the game
+	ture					bool to prevent typos from crashing the game
+	skipwarning				bool to skip region warning on title screen
+	input					input handling table
+	yOffset					camera render offset
+	chatboxX				text padding
+	frames					number of frames since start
+	layers					number of render passes
+	mode					render mode pointer
+	renderQueue				current render stack
+	parallaxPoints			render table for parallax math
+	oldAudio				previous audio track
+	loadOffset				starting offset in an audio track
+	cstrawberry				colour table
+	cbrownink				colour table
+	cclear					colour table
+	cwhite					colour table
+	cblack					colour table
+	framecolour				colour for the framebuffer
+	playlist				playlist table for audio processing
+	append					root file path
+	nobmp					emergency graphic file path
+	vnui					test graphic file path
+	testbg					test graphic file path
+	testmenu				test graphic file path
+	testbox					test graphic file path
+	blankpc					test graphic file path
+	hyenajpeg				test graphic file path
+	plastic					test graphic file path
+	Yorktown				sample parallax background paths
+	NorthCarolina			sample parallax background paths
+	YorktownParallax		sample parallax background math pointers
+	NorthCarolinaParallax	sample parallax background math pointers
+	testf					60pt font
+	azmyrian				60pt font
+	cenan					60pt font
+	iapakan					60pt font
+	nomyrian				60pt font
+	vastan					60pt font
+	midrick					60pt font
+	mediumtestf				38pt font
+	mediumazmyrian			38pt font
+	mediumcenan				38pt font
+	mediumiapakan			38pt font
+	mediumnomyrian			38pt font
+	mediumvastan			38pt font
+	mediummidrick 			38pt font
+	smalltestf				24pt font
+	smallazmyrian			24pt font
+	smallcenan				24pt font
+	smalliapakan			24pt font
+	smallnomyrian			24pt font
+	smallvastan				24pt font
+	smallmidrick			24pt font
+	pages					table for visual novel pages
+	escaped					Gender processor variable
+	wordbookEntries			Gender processor variable
+	p						Gender processor variable
+	r						Gender processor variable
+	wordbookStr				Gender processor variable
+	scriptPrefix			Gender processor variable
+	scriptSuffix			Gender processor variable
+	escapeCache				Gender processor variable
+	escapePattern			Gender processor variable
+
+Lua Data Structures
+	renderQueue		{identifier = id, layer = id, surface = GLFWimage, text = string, text2 = string, x = number, y = number, fw = number, w = number, h = number, colour = {r,g,b,a}, type = id, font = MacFont, scale = float, rotation = float}
+	
+	pages			{height = number, speed = number, padding = number, text = string, ftext = string, time = string, ftime = string, date = string, fdate = string, location = string, flocation = string, region = string, fregion = string, name = string, fname = string, title = string, ftitle = string, background = string, backgroundFallback = string, ui = string, uiFallback = string, char1 = string, char1Fallback = string, active1 = bool, char2 = string, char2Fallback = string, active2 = bool, char3 = string, char3Fallback = string, active3 = bool, char4 = string, char4Fallback = string, active4 = bool, music = number, musicFallback = number, action = id, actionPath = lua code block, colour = colour, weather = id, weathereffect = string, weatherseed = number, weatherstart = number, weatherend = number, weatherscale = number, weatherfb = string, weatherbg = string, weathercl = string, weatherfg = string, weatherfall = number, weatherdrift = number, weatherrotate = number, weatherstartrotate = number, weatherdriftupper = number, weatherdriftlower = number, option = string, options = options, selection = string, selectionFallback = string, framerate = number, targetpage = number}
+	parallaxPoints	{number, float, float, float, float, number}
+	oldQueue		{identifier = id, layer = id, surface = GLFWimage, text = string, text2 = string, x = number, y = number, fw = number, w = number, h = number, colour = {r,g,b,a}, type = id, font = MacFont, scale = float, rotation = float}
+	playlist		{string, number}
+	fonts			{MacFont, float}
+	options			{string, lua code block}
+	colour			{red, green, blue, aether}
+
+graphics.lua
+	This file is used to place graphics initialisation data, you can also use this to direct execution to a different lua script.
+	If you use a different lua script then all user facing funtions will still work, and the default engine will take hold when your script finishes and render atleast a single frame before closing. It is advised that you set mode to WINTER_RENDER_EXIT to prevent a crash on exit.
+
+save-1.plush
+	This file is used to place initialisation data, you can also use this to direct execution to a different lua script.
+	If you use a different lua script then all user facing funtions will still work, and the default engine will take hold when your script finishes and render atleast a single frame before closing. It is advised that you set mode to WINTER_RENDER_EXIT to prevent a crash on exit.
+
+
+Ruby Functions
+									System facing functions
+	IO.write						processor function for script capture
+									User facing functions
+	fillHash!()						clean up gaps in a hash
+	lua_key_pairs(hash)				convert a ruby hash to a lua table
+	dFeet(feet, inches)				return the imperial decimal of a provided height
+	dMetres(metres, centimetres)	return the imperial decimal of a provided height
+	calcHeight(feet)				return the pixel offset of a provided height
+Ruby Variables
+	pages		visual novel page data
+	wordbook	gender processor temporary hash
+
+Ruby Data Structures
+	pages			{
+						height: number, speed: number, padding: number,
+						text: string, ftext: string,
+						time: string, ftime: string,
+						date: string, fdate: string,
+						location: string, flocation: string,
+						region: string, fregion: string,
+						name: string, fname: string,
+						title: string, ftitle: string,
+						background: string, backgroundFallback: string,
+						ui: string, uiFallback: string,
+						char1: string, char1Fallback: string, active1: string,
+						char2: string, char2Fallback: string, active2: string,
+						char3: string, char3Fallback: string, active3: string,
+						char4: string, char4Fallback: string, active4: string,
+						music: string, musicFallback: string,
+						action: string, actionPath: string,
+						colour: string,
+						weather: string, weathereffect: string,
+						weatherseed: string,
+						weatherstart: number, weatherend: number,
+						weatherscale: string,
+						weatherfb: string, weatherbg: string, weathercl: string, weatherfg: string,
+						weatherfall: number, weatherdrift: number, weatherrotate: number, weatherstartrotate: string,
+						weatherdriftupper: number, weatherdriftlower: number,
+						option: string, options: string,
+						selection: string, selectionFallback: string,
+						framerate: string, targetpage: number
+					}
+
+pages.rb
+	Strings info
+		Place a string within        "' '"         to pass a string to lua
+		Place a string within   <runes> </runes>   to convert to anglish runes
+		Place a string within <anglish> </anglish> to convert to anglish language
+		Place a string within         " "          to pull a variable from lua
+		Use                          "nil"         instead of nil
+
+	Valid fonts
+		azmyrian       (60pt)
+		cenan          (60pt)
+		iapakan        (60pt)
+		nomyrian       (60pt)
+		iapakan        (60pt)
+		midrick        (60pt)
+		mediumazmyrian (38pt)
+		mediumcenan    (38pt)
+		mediumiapakan  (38pt)
+		mediumnomyrian (38pt)
+		mediumiapakan  (38pt)
+		mediummidrick  (38pt)
+		smallazmyrian  (24pt)
+		smallcenan     (24pt)
+		smalliapakan   (24pt)
+		smallnomyrian  (24pt)
+		smalliapakan   (24pt)
+		smallmidrick   (24pt)
+
+	Height info
+		The standard camera offset is 70.59 inches above the ground
+		Height input works off 1 inch =  15.41 pixels
+							or 1 foot = 184.95 pixels
+
+		The input number should mutiplied by 184.95 if using the provided feet
+		Upon load the number will added to the base 1088 pixels offset
+		Inputting -5.5 feet will lower the camera by 1017.23 pixels
+		Inputting  3.7 feet will raise the camera by  684.23 pixels
+
+		Use the following formulas to calculate the required input
+		Character imperial height formula:					feet	+	(inches / 12)				or		dFeet(feet, inches)
+		Character metric   height formula:	(metres * 3.280839895)	+	(centimetres * 0.032808399)	or	dMetres(metres, centimetres)
+
+		The speed input controls what percent of the distance will be travelled per frame (60fps locked)
+		10% speed is reccomened for smooth movement
+
+	Music info
+		Assign the currently playing track with a number corresponding to the playlist
+		musicFallback is the offset in milliseconds where the track should begin playing from
+
+		Keep in mind that changing the page to one that matches the currently playing track will not restart the track
+		Switching from the menu to a page matching the menu music will continue playing the track from the menu
+		Loading a save file will continue playing the track from the point it was when the game was saved
+
+	Paralalxing notes
+		{
+			start offset,
+			     skybox     move rate,
+			   background   move rate,
+			character layer move rate,
+			   foreground   move rate,
+			max offset,
+		}
+
+	Actions info
+
+	Date formats
+		Azmyri calendar
+			Date	[day 1-31]<monthXX>[year]<eramark>[era]
+					16<month11>45<eramark>57
+			ᚠ	30 <month01>
+			ᚢ	30 <month02>
+			ᚦ	30 <month03>
+			ᚩ	30 <month04>
+			ᚱ	30 <month05>
+			ᚳ	30 <month06>
+			ᚷ	30 <month07>
+			ᚹ	30 <month08>
+			ᚻ	30 <month09>
+			ᚾ	30 <month10>
+			ᛄ	30 <month11>
+			ᛇ	30 <month12>
+			ᛈ	30 <month13>
+			ᛉ	30 <month14>
+			ᚴ	30 <month15>
+			ᛏ	30 <month16>
+			ᛒ	30 <month17>
+			ᛖ	30 <month18>
+			ᛗ	30 <month19>
+			ᛚ	30 <month20>
+			ᛝ	30 <month21>
+			ᛟ	31 <month22>
+			ᛞ	30 <month23>
+			ᚪ	30 <month24>
+			ᚫ	30 <month25>
+			ᛠ	30 <month26>
+			ᚣ	30 <month27>
+			ᛣ	30 <month28>
+			ᚸ	30 <month29>
+			ᛥ	30 <month30>

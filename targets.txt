@@ -1,0 +1,138 @@
+0.6 release requirements
+
+remove sdl2 buffer bodge - complete
+add weather effects - complete
+sort out gpu texturing - complete
+fix north carolina parallax - complete
+add choice buttons - complete
+add window capture - complete
+update gender system - complete
+Remove save button - complete
+Create menu system - complete
+Create save function - complete
+update docs.txt - complete
+update vars.txt - complete
+create function to clear a gpu texture - complete
+update sample game dialogue - complete
+
+0.6 release additions
+
+targets.txt to track targets and changes
+Winter.middle() to get the midpoint of an image with padding target
+Winter.saveGame() to simplify saving
+Winter.cleanup() to clear render queue
+Winter.checkFile() removed
+Winter.processGender() to autofill player pronouns
+GLFW.killWindow() to also set logic to exit
+GLFW.killTexture() for gpu texture culling
+updated gender processing
+Ruby.startup() to initialise the mruby vm
+Ruby.kill() to kill the mruby vm
+fillHash!() to clean up missing space in hashes
+added page targets
+added .dmg distribution package
+improved CFBundle info list
+
+0.6 release bugs
+
+red shift on Winter.getWindow() return - no workaround, its a feature for now
+file read checks on read only system crash - no work around, dont run from .dmg
+load game not working - fixed
+save game not working - fixed
+gpu textured images cannot be modified - call GLFW.killTexture(image) before modifying
+some pronoun replacements erase characters from a string that should not be erased - bodged in a ruby script for now
+crash on macos 26 - fixed
+
+-------------------------------------------------------------------------------
+
+0.7 release requirements
+
+port rpgmaker clone from sdl2
+simplify weather effects
+optimise and adjust choice buttons
+create proper menu system
+optimise real time pronoun insertion - complete
+fix window capture red shift - use GLFW.modifyImage(image, WINTER_AETHER_CLEANUP, 0, 0, 0, 0) to remove red shift, window capture preserves non complete aether
+port project abyss engine
+add multiple audio track processing
+
+0.7 release additions
+
+added new game node targetting
+fixed audio looping
+GLFW.transformImage() to perform homography matrix transforms
+improved performance on A12Z processor
+added intel support
+moved audio functions to dedicated table
+25% peformance boost on all platforms
+GLFW.saveImage() to save a loaded image
+GLFW.blitImage() for software blitting
+switched from lodepng to native code
+added Metal rendering functions
+
+0.7 release bugs
+
+red shift on Winter.getWindow() return - keeping as logic feature, use WINTER_AETHER_CLEANUP render node to remove
+file write checks on read only system crash
+memory corruption on GLFW.blitImage() - fixed, was actually Winter.cleanup()
+metal renderer hangs entire system and external processes sometimes - possibly fixed
+
+-------------------------------------------------------------------------------
+
+0.8 release requirements
+
+port rpgmaker clone from sdl2
+simplify weather effects in visual novek
+optimise and adjust choice buttons in visual novel
+create global menu system
+port project abyss engine
+add multiple audio track processing
+
+0.8 release additions
+
+improved metal render bindings speed by 20%
+refactored code to remove some unneeded functions
+sunset GLFWimage usage even in GLFW mode
+added Plush.raycast()
+added Plush.setPlayerHeight()
+added Plush.getPlayerHeight()
+added Plush.setPlayerPosition()
+added Plush.getPlayerPosition()
+added Plush.setPlayerRotation()
+added Plush.getPlayerRotation()
+added Plush.setRenderDistance()
+added Plush.getRenderDistance()
+added Plush.setTilt()
+added Plush.getTilt()
+added Plush.setMap()
+added Plush.movePlayer()
+added Plush.printImage()
+added Plush.threads()
+added Plush.fog())
+up to 70% performance increase on all platforms when using cpu bound 2d renderer instead of gpu
+added Plush.setFov()
+added Plush.getFov()
+added Plush.dither()
+added Plush.skew()
+added Plush.sortVertex()
+added Plush.createCube()
+added Plush.createFace()
+added debuggerdeep flag to enable performance intensive debug logs
+fixed Render.blit() docs
+added Plush.bilinear()
+added Plush.trimImage()
+added Plush.bilinearSolid()
+added Plush.dontmovePlayer()
+added Plush.round90()
+added Plush.createImage()
+added textframebuffer debug flag
+
+0.8 release bugs
+
+file write checks on read only system crash
+metal renderer occasinally hangs other apps
+Plush.sortVertex() improperly applies painter
+Plush.sortVertex() improperly culls some faces
+Plush.createFace() is not written yet
+Plush.project() does not support roll yet
+rays cast into void now demolish performance
