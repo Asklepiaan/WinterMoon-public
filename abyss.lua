@@ -673,9 +673,9 @@ while not Render.checkClose() do
 		seadist = 0
 		disp = 17
 		oldx = nil; oldy = nil; moved = false
-		travel = Render.loadPNG(rompath .. "/ui/travel.png")
-		mappoint = Render.loadPNG(blankpc)
-		shade = Render.loadPNG(rompath .. "/ui/mapshade.png")
+		travel = Plush.loadPNG(rompath .. "/ui/travel.png")
+		mappoint = Plush.loadPNG(blankpc)
+		shade = Plush.loadPNG(rompath .. "/ui/mapshade.png")
 		
 		Winter.pushButton(0, 244, 0, 65, 1)
 
@@ -759,8 +759,8 @@ while not Render.checkClose() do
 						else
 							loccolour = red
 						end
-						Render.modifyImage(mappoint, WINTER_AETHER_FILL, loccolour[1], loccolour[2], loccolour[3], loccolour[4])
-						Render.blitImage(WINTER_FRAMEBUFFER, mappoint, overlay[i].x + mapx, overlay[i].y + mapy, false, 4.0, 0.0)
+						Plush.modifyImage(mappoint, WINTER_AETHER_FILL, loccolour[1], loccolour[2], loccolour[3], loccolour[4])
+						Plush.blitImage(WINTER_FRAMEBUFFER, mappoint, overlay[i].x + mapx, overlay[i].y + mapy, false, 4.0, 0.0)
 						dx = -10000; dy = -10000
 						if (overlay[i].direction == 1) then
 							dx = overlay[i].x + mapx + 4
@@ -776,9 +776,9 @@ while not Render.checkClose() do
 							dy = overlay[i].y + mapy - 16
 						end
 						textsurface = Font.renderText(overlay[i].name, meiyro15[1], loccolour[1], loccolour[2], loccolour[3], loccolour[4])
-						Render.modifyImage(textsurface, WINTER_COLOUR_FILL, loccolour[1], loccolour[2], loccolour[3], loccolour)
-						Render.blitImage(WINTER_FRAMEBUFFER, textsurface, dx, dy, true, 1.0, 0.0)
-						Render.killImage(textsurface)
+						Plush.modifyImage(textsurface, WINTER_COLOUR_FILL, loccolour[1], loccolour[2], loccolour[3], loccolour)
+						Plush.blitImage(WINTER_FRAMEBUFFER, textsurface, dx, dy, true, 1.0, 0.0)
+						Plush.killImage(textsurface)
 					end
 					if (touched == 1) then
 						pos = math.sqrt((input.mouse.x - (overlay[i].x + mapx))^2) + math.sqrt((input.mouse.y - (overlay[i].y + mapy))^2)
@@ -791,14 +791,14 @@ while not Render.checkClose() do
 				end
 			end
 
-			Render.blitImage(WINTER_FRAMEBUFFER, shade, 0, 0, true, 1.0, 0.0)
+			Plush.blitImage(WINTER_FRAMEBUFFER, shade, 0, 0, true, 1.0, 0.0)
 			textsurface = Font.renderText(overlay[disp].desc, meiyro15[1], green[1], green[2], green[3], green[4])
-			Render.modifyImage(textsurface, WINTER_COLOUR_FILL, green[1], green[2], green[3], green)
-			Render.blitImage(WINTER_FRAMEBUFFER, textsurface, 0, 522, true, 1.0, 0.0)
-			Render.killImage(textsurface)
+			Plush.modifyImage(textsurface, WINTER_COLOUR_FILL, green[1], green[2], green[3], green)
+			Plush.blitImage(WINTER_FRAMEBUFFER, textsurface, 0, 522, true, 1.0, 0.0)
+			Plush.killImage(textsurface)
 			if (disp ~= 17) then
 				if (overlay[location].set == overlay[disp].set) or (overlay[location].set == ABYSS_SET_SEA) and (overlay[disp].docks) then
-					Render.blitImage(WINTER_FRAMEBUFFER, travel, 0, 0, false, 1.0, 0.0)
+					Plush.blitImage(WINTER_FRAMEBUFFER, travel, 0, 0, false, 1.0, 0.0)
 					if (touched == 1) and (pressed == 1) then
 						if (overlay[location].set == ABYSS_SET_SEA) then
 							stamina = stamina - seadist
@@ -837,9 +837,9 @@ while not Render.checkClose() do
 			end
 		end
 		Winter.cleanup()
-		Render.killImage(mappoint)
-		Render.killImage(travel)
-		Render.killImage(shade)
+		Plush.killImage(mappoint)
+		Plush.killImage(travel)
+		Plush.killImage(shade)
 
 
 	elseif (st == ABYSS_DUNGEON) then
@@ -853,16 +853,16 @@ while not Render.checkClose() do
 			dofile(rompath .. '/scripts/abyssdungeons/0map0.lua')
 		end
 
-		mdanger = Render.loadPNG(rompath .. "/ui/peaceful.png")
-		mwarn = Render.loadPNG(rompath .. "/ui/safe.png")
-		msafe = Render.loadPNG(rompath .. "/ui/warn.png")
-		mpeaceful = Render.loadPNG(rompath .. "/ui/danger.png")
-		munknown = Render.loadPNG(rompath .. "/ui/unknown.png")
+		mdanger = Plush.loadPNG(rompath .. "/ui/peaceful.png")
+		mwarn = Plush.loadPNG(rompath .. "/ui/safe.png")
+		msafe = Plush.loadPNG(rompath .. "/ui/warn.png")
+		mpeaceful = Plush.loadPNG(rompath .. "/ui/danger.png")
+		munknown = Plush.loadPNG(rompath .. "/ui/unknown.png")
 
 		textbox = Plush.createImage(480, 272, white[1], white[2], white[3], white[4])
 		tmp1 = Plush.createImage(476, 268, black[1], black[2], black[3], black[4])
-		Render.blitImage(textbox, tmp1, 2, 2, false, 1.0, 0.0)
-		Render.killImage(tmp1)
+		Plush.blitImage(textbox, tmp1, 2, 2, false, 1.0, 0.0)
+		Plush.killImage(tmp1)
 
 		renderQueue = {
 			{identifier = ABYSS_RENDER_BLACK_BAR,
@@ -1208,13 +1208,13 @@ while not Render.checkClose() do
 			end
 			Winter.renderStack()
 			if (displaytext) then
-				Render.blitImage(WINTER_FRAMEBUFFER, textbox, 240, 136, false, 1.0, 0.0)
-				Render.blitImage(WINTER_FRAMEBUFFER, textsurface, 242, 138, true, 1.0, 0.0)
+				Plush.blitImage(WINTER_FRAMEBUFFER, textbox, 240, 136, false, 1.0, 0.0)
+				Plush.blitImage(WINTER_FRAMEBUFFER, textsurface, 242, 138, true, 1.0, 0.0)
 				if (input.key.z) then
 					displaytext = false
 					mlatch = false
 					alatch = false
-					Render.killImage(textsurface)
+					Plush.killImage(textsurface)
 					textsurface = nil
 					load(Ruby.runScript(approve))()
 				end
@@ -1222,7 +1222,7 @@ while not Render.checkClose() do
 					displaytext = false
 					mlatch = false
 					alatch = false
-					Render.killImage(textsurface)
+					Plush.killImage(textsurface)
 					textsurface = nil
 					load(Ruby.runScript(disapprove))()
 				end
@@ -1249,34 +1249,34 @@ while not Render.checkClose() do
 			end
 		end
 		if (Plush.checkImage(mdanger)) and not (dontclear == 0) then
-			Render.killImage(mdanger)
+			Plush.killImage(mdanger)
 			mdanger = nil
 		end
 		if (Plush.checkImage(mwarn)) and not (dontclear == 1) then
-			Render.killImage(mwarn)
+			Plush.killImage(mwarn)
 			mwarn = nil
 		end
 		if (Plush.checkImage(msafe)) and not (dontclear == 2) then
-			Render.killImage(msafe)
+			Plush.killImage(msafe)
 			msafe = nil
 		end
 		if (Plush.checkImage(mpeaceful)) and not (dontclear == 3) then
-			Render.killImage(mpeaceful)
+			Plush.killImage(mpeaceful)
 			mpeaceful = nil
 		end
 		if (Plush.checkImage(munknown)) and not (dontclear == 4) then
-			Render.killImage(munknown)
+			Plush.killImage(munknown)
 			munknown = nil
 		end
 		if (Plush.checkImage(textbox)) then
-			Render.killImage(textbox)
+			Plush.killImage(textbox)
 			textbox = nil
 		end
 		Winter.cleanup()
 		if (imageVector) then
 			for i = 1, #imageVector do
 				if (imageVector[i - 1]) then
-					Render.killImage(imageVector[i - 1])
+					Plush.killImage(imageVector[i - 1])
 					imageVector[i - 1] = nil
 				end
 			end

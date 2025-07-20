@@ -8,7 +8,7 @@ drawFrame = true
 debugger = true
 frames = 0
 
-image, y, x = Metal.loadPNG('/Users/plushie/Desktop/Screenshot 2025-07-07 at 3.23.08 PM.png')
+image, y, x = Plush.loadPNG('/Users/plushie/Desktop/Screenshot 2025-07-07 at 3.23.08 PM.png')
 
 while not Metal.checkClose() do
 	wtime = Winter.getClock()
@@ -18,7 +18,7 @@ while not Metal.checkClose() do
 	end
 	Metal.updateInput()
 
-	Metal.renderImage(image)
+	Render.renderImage(image)
 	if (debugger == true) then
 		Metal.setTitle(frames .. ' frames passed, x: ' .. WINTER_MOUSE_X .. ', y: ' .. WINTER_MOUSE_Y)
 		debugentries = debugentries + 1
@@ -27,7 +27,7 @@ while not Metal.checkClose() do
 
 	if (WINTER_KEY_RETURN == true) then
 		window = Metal.getWindow()
-		Metal.saveImage('/Users/plushie/Desktop/test.png', window)
+		Plush.saveImage('/Users/plushie/Desktop/test.png', window)
 	end
 
 	if (drawFrame) then

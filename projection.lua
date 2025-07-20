@@ -3,33 +3,33 @@ framecolour = {255, 0, 255}
 drawFrame = true
 frames = 0
 
-walls = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/walls.png')
-wall1 = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/wall1.png')
-wall2 = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/wall2.png')
-wall3 = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/wall3.png')
-wall4 = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/wall4.png')
-wall5 = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/wall5.png')
-wall6 = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/wall6.png')
-pogwall = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/pog.png')
-roof = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/floor.png')
-floor = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/roof.png')
-coheth = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/coheth.png')
-cohetht = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/cohetht.png')
-bricks1 = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/bricks1.png')
-bricks2 = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/bricks2.png')
-bricks3 = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/bricks3.png')
-bricks4 = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/bricks4.png')
-bricks5 = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/bricks5.png')
-aestya = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/aestya.png')
-plushiesolid = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/plushiesolid.png')
-transparent = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/transparent.png')
-signeast = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/signeast.png')
-signnorth = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/signnorth.png')
-furry = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/furry.png')
-monji = Metal.loadPNG(Winter.getPath() .. '../Resources/package/tiles/monji.png')
+walls = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/walls.png')
+wall1 = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/wall1.png')
+wall2 = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/wall2.png')
+wall3 = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/wall3.png')
+wall4 = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/wall4.png')
+wall5 = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/wall5.png')
+wall6 = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/wall6.png')
+pogwall = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/pog.png')
+roof = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/floor.png')
+floor = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/roof.png')
+coheth = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/coheth.png')
+cohetht = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/cohetht.png')
+bricks1 = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/bricks1.png')
+bricks2 = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/bricks2.png')
+bricks3 = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/bricks3.png')
+bricks4 = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/bricks4.png')
+bricks5 = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/bricks5.png')
+aestya = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/aestya.png')
+plushiesolid = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/plushiesolid.png')
+transparent = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/transparent.png')
+signeast = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/signeast.png')
+signnorth = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/signnorth.png')
+furry = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/furry.png')
+monji = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/monji.png')
 
-Metal.killImage(WINTER_FRAMEBUFFER)
-WINTER_FRAMEBUFFER = Render.loadPNG(Winter.getPath() .. '../Resources/package/ui/empty-480x272.png')
+Plush.killImage(WINTER_FRAMEBUFFER)
+WINTER_FRAMEBUFFER = Plush.loadPNG(Winter.getPath() .. '../Resources/package/ui/empty-480x272.png')
 
 imageVector = {nil, walls, floor, roof, pogwall, wall1, wall2, wall3, wall4, wall5, wall6, coheth, bricks1, bricks2, bricks3, bricks4, bricks5, aestya, cohetht, plushiesolid, transparent, signeast, signnorth, furry, monji}
 --				0	1		2		3	4			5	6		7		8		9	10		11		12		13			14		15		16		17		18			19			20			21			22			23	24
@@ -398,7 +398,7 @@ while not Metal.checkClose() do
 		Plush.dither(WINTER_FRAMEBUFFER, 12.5, false)
 	end
 
-	Metal.renderImage(WINTER_FRAMEBUFFER)
+	Render.renderImage(WINTER_FRAMEBUFFER)
 	--Plush.printImage(WINTER_FRAMEBUFFER, 80, 24); debugger = false
 	if (debugger == true) then
 		debugentries = debugentries + 1
@@ -407,7 +407,7 @@ while not Metal.checkClose() do
 
 	if (WINTER_KEY_RETURN == true) then
 		window = Metal.getWindow()
-		Metal.saveImage('/Users/plushie/Desktop/test.png', window)
+		Plush.saveImage('/Users/plushie/Desktop/test.png', window)
 	end
 
 	if (drawFrame) then

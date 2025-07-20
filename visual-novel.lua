@@ -209,7 +209,7 @@ while not Render.checkClose() do
 			WINTER_RENDER_TMP = weatherFramebuffer
 			if not (WINTER_WEATHER_LAYER_PATH1 == WINTER_RENDER_TMP) then
 				WINTER_WEATHER_LAYER_PATH1 = weatherFramebuffer
-				Render.killImage(WINTER_WEATHER_LAYER_IMAGE1)
+				Plush.killImage(WINTER_WEATHER_LAYER_IMAGE1)
 				file = io.open(Winter.getPath() .. '../Resources/package/weather/' .. weatherString .. WINTER_RENDER_TMP)
 				if not (file) then
 					WINTER_RENDER_TMP2 = nobmp
@@ -217,13 +217,13 @@ while not Render.checkClose() do
 					file:close()
 					WINTER_RENDER_TMP2 = Winter.getPath() .. '../Resources/package/weather/' .. weatherString .. WINTER_RENDER_TMP
 				end
-				WINTER_WEATHER_LAYER_IMAGE1 = Render.loadPNG(WINTER_RENDER_TMP2)
+				WINTER_WEATHER_LAYER_IMAGE1 = Plush.loadPNG(WINTER_RENDER_TMP2)
 			end
 		elseif (WINTER_WEATHER_LAYER == 2) then
 			WINTER_RENDER_TMP = weatherBackground
 			if not (WINTER_WEATHER_LAYER_PATH2 == WINTER_RENDER_TMP) then
 				WINTER_WEATHER_LAYER_PATH2 = weatherBackground
-				Render.killImage(WINTER_WEATHER_LAYER_IMAGE2)
+				Plush.killImage(WINTER_WEATHER_LAYER_IMAGE2)
 				file = io.open(Winter.getPath() .. '../Resources/package/weather/' .. weatherString .. WINTER_RENDER_TMP)
 				if not (file) then
 					WINTER_RENDER_TMP2 = nobmp
@@ -231,13 +231,13 @@ while not Render.checkClose() do
 					file:close()
 					WINTER_RENDER_TMP2 = Winter.getPath() .. '../Resources/package/weather/' .. weatherString .. WINTER_RENDER_TMP
 				end
-				WINTER_WEATHER_LAYER_IMAGE2 = Render.loadPNG(WINTER_RENDER_TMP2)
+				WINTER_WEATHER_LAYER_IMAGE2 = Plush.loadPNG(WINTER_RENDER_TMP2)
 			end
 		elseif (WINTER_WEATHER_LAYER == 3) then
 			WINTER_RENDER_TMP = weatherCharacter
 			if not (WINTER_WEATHER_LAYER_PATH3 == WINTER_RENDER_TMP) then
 				WINTER_WEATHER_LAYER_PATH3 = weatherCharacter
-				Render.killImage(WINTER_WEATHER_LAYER_IMAGE3)
+				Plush.killImage(WINTER_WEATHER_LAYER_IMAGE3)
 				file = io.open(Winter.getPath() .. '../Resources/package/weather/' .. weatherString .. WINTER_RENDER_TMP)
 				if not (file) then
 					WINTER_RENDER_TMP2 = nobmp
@@ -245,13 +245,13 @@ while not Render.checkClose() do
 					file:close()
 					WINTER_RENDER_TMP2 = Winter.getPath() .. '../Resources/package/weather/' .. weatherString .. WINTER_RENDER_TMP
 				end
-				WINTER_WEATHER_LAYER_IMAGE3 = Render.loadPNG(WINTER_RENDER_TMP2)
+				WINTER_WEATHER_LAYER_IMAGE3 = Plush.loadPNG(WINTER_RENDER_TMP2)
 			end
 		elseif (WINTER_WEATHER_LAYER == 4) then
 			WINTER_RENDER_TMP = weatherForeground
 			if not (WINTER_WEATHER_LAYER_PATH4 == WINTER_RENDER_TMP) then
 				WINTER_WEATHER_LAYER_PATH4 = weatherForeground
-				Render.killImage(WINTER_WEATHER_LAYER_IMAGE4)
+				Plush.killImage(WINTER_WEATHER_LAYER_IMAGE4)
 				file = io.open(Winter.getPath() .. '../Resources/package/weather/' .. weatherString .. WINTER_RENDER_TMP)
 				if not (file) then
 					WINTER_RENDER_TMP2 = nobmp
@@ -259,7 +259,7 @@ while not Render.checkClose() do
 					file:close()
 					WINTER_RENDER_TMP2 = Winter.getPath() .. '../Resources/package/weather/' .. weatherString .. WINTER_RENDER_TMP
 				end
-				WINTER_WEATHER_LAYER_IMAGE4 = Render.loadPNG(WINTER_RENDER_TMP2)
+				WINTER_WEATHER_LAYER_IMAGE4 = Plush.loadPNG(WINTER_RENDER_TMP2)
 			end
 		end
 		renderQueue[#renderQueue + 1] = {
@@ -336,7 +336,7 @@ while not Render.checkClose() do
 		if (pressed > 0) then
 			latched = false
 			prevBuffer = Render.getWindow()
-			Render.modifyImage(prevBuffer, WINTER_AETHER_CLEANUP, 0, 0, 0, 0)
+			Plush.modifyImage(prevBuffer, WINTER_AETHER_CLEANUP, 0, 0, 0, 0)
 
 			if (pressed == 1) then
 				pagenum = 1
@@ -450,7 +450,7 @@ while not Render.checkClose() do
 			WINTER_FRAMERATE = pages[pagenum].framerate
 			for i = 1, #renderQueue do
 				if (renderQueue[i].identifier == WINTER_OPTION_1) or (renderQueue[i].identifier == WINTER_OPTION_2) or (renderQueue[i].identifier == WINTER_OPTION_3) then
-					Render.killImage(renderQueue[i].surface)
+					Plush.killImage(renderQueue[i].surface)
 					renderQueue[i] = {type = WINTER_RENDER_SKIP}
 					purgeList[#purgeList + 1] = i
 				end
@@ -488,18 +488,18 @@ while not Render.checkClose() do
 
 			if (pages[pagenum].action) then
 				if (pages[pagenum].action == WINTER_PARALLAX) and not (renderQueue[WINTER_RENDER_1].action == WINTER_PARALLAX) then
-					Render.killImage(renderQueue[WINTER_RENDER_1].surface)
+					Plush.killImage(renderQueue[WINTER_RENDER_1].surface)
 					renderQueue[WINTER_RENDER_1] = {identifier = pages[pagenum].background.skybox, layer = nil, surface = nil, surface1 = nil, surface2 = nil, surface3 = nil, surface4 = nil, text = pages[pagenum].background, text2 = pages[pagenum].backgroundFallback, x = 0, y = 0, fw = nil, w = nil, h = nil, colour = nil, type = WINTER_PARALLAX, font = nil, action = WINTER_PARALLAX, scale = 1.0, rotation = 0}
 					load('parallaxPoints = ' .. pages[pagenum].actionPath)()
 					WINTER_RENDER_SKIP_PARALLAX = true
 				end
 				if (WINTER_RENDER_SKIP_PARALLAX == false) and (pages[pagenum].action == WINTER_PARALLAX) then
 					if not (WINTER_RENDER_S1.identifier == pages[pagenum].background.skybox) then
-						Render.killImage(renderQueue[WINTER_RENDER_1].surface)
-						Render.killImage(renderQueue[WINTER_RENDER_1].surface1)
-						Render.killImage(renderQueue[WINTER_RENDER_1].surface2)
-						Render.killImage(renderQueue[WINTER_RENDER_1].surface3)
-						Render.killImage(renderQueue[WINTER_RENDER_1].surface4)
+						Plush.killImage(renderQueue[WINTER_RENDER_1].surface)
+						Plush.killImage(renderQueue[WINTER_RENDER_1].surface1)
+						Plush.killImage(renderQueue[WINTER_RENDER_1].surface2)
+						Plush.killImage(renderQueue[WINTER_RENDER_1].surface3)
+						Plush.killImage(renderQueue[WINTER_RENDER_1].surface4)
 						renderQueue[WINTER_RENDER_1] = {identifier = pages[pagenum].background.skybox, layer = nil, surface = nil, surface1 = nil, surface2 = nil, surface3 = nil, surface4 = nil, text = pages[pagenum].background, text2 = pages[pagenum].backgroundFallback, x = 0, y = 0, fw = nil, w = nil, h = nil, colour = nil, type = WINTER_PARALLAX, font = nil, action = WINTER_PARALLAX, scale = 1.0, rotation = 0}
 						load('parallaxPoints = ' .. pages[pagenum].actionPath)()
 					end
@@ -507,68 +507,68 @@ while not Render.checkClose() do
 				WINTER_RENDER_SKIP_PARALLAX = flase
 			else
 				if (renderQueue[WINTER_RENDER_1].action == WINTER_PARALLAX) then
-					Render.killImage(renderQueue[WINTER_RENDER_1].surface)
-					Render.killImage(renderQueue[WINTER_RENDER_1].surface1)
-					Render.killImage(renderQueue[WINTER_RENDER_1].surface2)
-					Render.killImage(renderQueue[WINTER_RENDER_1].surface3)
-					Render.killImage(renderQueue[WINTER_RENDER_1].surface4)
+					Plush.killImage(renderQueue[WINTER_RENDER_1].surface)
+					Plush.killImage(renderQueue[WINTER_RENDER_1].surface1)
+					Plush.killImage(renderQueue[WINTER_RENDER_1].surface2)
+					Plush.killImage(renderQueue[WINTER_RENDER_1].surface3)
+					Plush.killImage(renderQueue[WINTER_RENDER_1].surface4)
 				end
 				if not (WINTER_RENDER_S1.text == pages[pagenum].background) then
-					Render.killImage(renderQueue[WINTER_RENDER_1].surface)
+					Plush.killImage(renderQueue[WINTER_RENDER_1].surface)
 					renderQueue[WINTER_RENDER_1] = {identifier = WINTER_BACKGROUND, layer = WINTER_LAYER_FRAMEBUFFER, surface = nil, text = pages[pagenum].background, text2 = pages[pagenum].backgroundFallback, x = 0, y = 0, fw = nil, w = nil, h = nil, colour = nil, type = WINTER_IMAGE, font = nil, scale = 1.0, rotation = 0}
 				end
 				WINTER_RENDER_S1 = renderQueue[WINTER_RENDER_1]
 			end
 			if not (WINTER_RENDER_S3.text == pages[pagenum].char1) or (pages[pagenum].active1 ~= pages[Winter.clamp(pagenum - 1, 1, #pages)].active1) then
-				Render.killImage(renderQueue[WINTER_RENDER_3].surface)
+				Plush.killImage(renderQueue[WINTER_RENDER_3].surface)
 				WINTER_INACTIVE_1 = false
 				renderQueue[WINTER_RENDER_3] = {identifier = WINTER_CHARACTER1, layer = WINTER_LAYER_CHARACTER, surface = nil, text = pages[pagenum].char1, text2 = pages[pagenum].char1Fallback, x = nil, y = nil, fw = nil, w = nil, h = nil, colour = nil, type = WINTER_CHARACTER1, font = nil, scale = 1.0, rotation = 0}
 			end
 			if not (WINTER_RENDER_S2.text == pages[pagenum].char2) or (pages[pagenum].active2 ~= pages[Winter.clamp(pagenum - 1, 1, #pages)].active2) then
-				Render.killImage(renderQueue[WINTER_RENDER_2].surface)
+				Plush.killImage(renderQueue[WINTER_RENDER_2].surface)
 				WINTER_INACTIVE_2 = false
 				renderQueue[WINTER_RENDER_2] = {identifier = WINTER_CHARACTER2, layer = WINTER_LAYER_CHARACTER, surface = nil, text = pages[pagenum].char2, text2 = pages[pagenum].char2Fallback, x = nil, y = nil, fw = nil, w = nil, h = nil, colour = nil, type = WINTER_CHARACTER2, font = nil, scale = 1.0, rotation = 0}
 			end
 			if not (WINTER_RENDER_S5.text == pages[pagenum].char3) or (pages[pagenum].active3 ~= pages[Winter.clamp(pagenum - 1, 1, #pages)].active3) then
-				Render.killImage(renderQueue[WINTER_RENDER_5].surface)
+				Plush.killImage(renderQueue[WINTER_RENDER_5].surface)
 				WINTER_INACTIVE_3 = false
 				renderQueue[WINTER_RENDER_5] = {identifier = WINTER_CHARACTER3, layer = WINTER_LAYER_CHARACTER, surface = nil, text = pages[pagenum].char3, text2 = pages[pagenum].char3Fallback, x = nil, y = nil, fw = nil, w = nil, h = nil, colour = nil, type = WINTER_CHARACTER3, font = nil, scale = 1.0, rotation = 0}
 			end
 			if not (WINTER_RENDER_S4.text == pages[pagenum].char4) or (pages[pagenum].active4 ~= pages[Winter.clamp(pagenum - 1, 1, #pages)].active4) then
-				Render.killImage(renderQueue[WINTER_RENDER_4].surface)
+				Plush.killImage(renderQueue[WINTER_RENDER_4].surface)
 				WINTER_INACTIVE_4 = false
 				renderQueue[WINTER_RENDER_4] = {identifier = WINTER_CHARACTER4, layer = WINTER_LAYER_CHARACTER, surface = nil, text = pages[pagenum].char4, text2 = pages[pagenum].char4Fallback, x = nil, y = nil, fw = nil, w = nil, h = nil, colour = nil, type = WINTER_CHARACTER4, font = nil, scale = 1.0, rotation = 0}
 			end
 			if not (WINTER_RENDER_S6.text == pages[pagenum].ui) then
-				Render.killImage(renderQueue[WINTER_RENDER_6].surface)
+				Plush.killImage(renderQueue[WINTER_RENDER_6].surface)
 				renderQueue[WINTER_RENDER_6] = {identifier = WINTER_INTERFACE, layer = WINTER_LAYER_FOREGROUND, surface = nil, text = pages[pagenum].ui, text2 = pages[pagenum].uiFallback, x = 0, y = 0, fw = nil, w = nil, h = nil, colour = nil, type = WINTER_IMAGE, font = nil, scale = 1.0, rotation = 0}
 			end
 			if not (WINTER_RENDER_S7.text == pages[pagenum].text) then
-				Render.killImage(renderQueue[WINTER_RENDER_7].surface)
+				Plush.killImage(renderQueue[WINTER_RENDER_7].surface)
 				renderQueue[WINTER_RENDER_7] = {identifier = WINTER_MESSAGE, layer = WINTER_LAYER_FOREGROUND, surface = nil, text = pages[pagenum].text, text2 = '', x = chatboxX, y = 382, fw = nil, w = nil, h = nil, colour = cbrownink, type = WINTER_TEXT_SLIDE_RIGHT, font = pages[pagenum].ftext, scale = 1.0, rotation = 0}
 			end
 			if not (WINTER_RENDER_S8.text == pages[pagenum].date) then
-				Render.killImage(renderQueue[WINTER_RENDER_8].surface)
+				Plush.killImage(renderQueue[WINTER_RENDER_8].surface)
 				renderQueue[WINTER_RENDER_8] = {identifier = WINTER_DATE, layer = WINTER_LAYER_FOREGROUND, surface = nil, text = pages[pagenum].date, text2 = '', x = 10, y = 42, fw = nil, w = nil, h = nil, colour = cwhite, type = WINTER_TEXT, font = pages[pagenum].fdate, scale = 1.0, rotation = 0}
 			end
 			if not (WINTER_RENDER_S9.text == pages[pagenum].time) then
-				Render.killImage(renderQueue[WINTER_RENDER_9].surface)
+				Plush.killImage(renderQueue[WINTER_RENDER_9].surface)
 				renderQueue[WINTER_RENDER_9] = {identifier = WINTER_TIME, layer = WINTER_LAYER_FOREGROUND, surface = nil, text = pages[pagenum].time, text2 = '', x = 10, y = 12, fw = nil, w = nil, h = nil, colour = cwhite, type = WINTER_TEXT, font = pages[pagenum].ftime, scale = 1.0, rotation = 0}
 			end
 			if not (WINTER_RENDER_S10.text == pages[pagenum].name) then
-				Render.killImage(renderQueue[WINTER_RENDER_10].surface)
+				Plush.killImage(renderQueue[WINTER_RENDER_10].surface)
 				renderQueue[WINTER_RENDER_10] = {identifier = WINTER_NAME, layer = WINTER_LAYER_FOREGROUND, surface = nil, text = pages[pagenum].name, text2 = '', x = chatboxX, y = 352, fw = nil, w = nil, h = nil, colour = cwhite, type = WINTER_TEXT, font = pages[pagenum].fname, scale = 1.0, rotation = 0}
 			end
 			if not (WINTER_RENDER_S11.text == pages[pagenum].title) then
-				Render.killImage(renderQueue[WINTER_RENDER_11].surface)
+				Plush.killImage(renderQueue[WINTER_RENDER_11].surface)
 				renderQueue[WINTER_RENDER_11] = {identifier = WINTER_TITLE, layer = WINTER_LAYER_FOREGROUND, surface = nil, text = pages[pagenum].title, text2 = '', x = chatboxX, y = 322, fw = nil, w = nil, h = nil, colour = cbrownink, type = WINTER_TEXT, font = pages[pagenum].ftitle, scale = 1.0, rotation = 0}
 			end
 			if not (WINTER_RENDER_S12.text == pages[pagenum].location) then
-				Render.killImage(renderQueue[WINTER_RENDER_12].surface)
+				Plush.killImage(renderQueue[WINTER_RENDER_12].surface)
 				renderQueue[WINTER_RENDER_12] = {identifier = WINTER_LOCATION, layer = WINTER_LAYER_FOREGROUND, surface = nil, text = pages[pagenum].location, text2 = '', x = 750, y = 12, fw = nil, w = nil, h = nil, colour = cwhite, type = WINTER_TEXT, font = pages[pagenum].flocation, scale = 1.0, rotation = 0}
 			end
 			if not (WINTER_RENDER_S13.text == pages[pagenum].region) then
-				Render.killImage(renderQueue[WINTER_RENDER_13].surface)
+				Plush.killImage(renderQueue[WINTER_RENDER_13].surface)
 				renderQueue[WINTER_RENDER_13] = {identifier = WINTER_REGION, layer = WINTER_LAYER_FOREGROUND, surface = nil, text = pages[pagenum].region, text2 = '', x = 850, y = 42, fw = nil, w = nil, h = nil, colour = cbrownink, type = WINTER_TEXT, font = pages[pagenum].fregion, scale = 1.0, rotation = 0}
 			end
 			WINTER_RENDER_S1 = renderQueue[WINTER_RENDER_1]
@@ -623,7 +623,7 @@ while not Render.checkClose() do
 				previousMode = mode
 				mode = WINTER_MENU_SAVE
 				prevBuffer = Render.getWindow()
-				Render.modifyImage(prevBuffer, WINTER_AETHER_CLEANUP, 0, 0, 0, 0)
+				Plush.modifyImage(prevBuffer, WINTER_AETHER_CLEANUP, 0, 0, 0, 0)
 			end
 		end
 
@@ -672,10 +672,10 @@ while not Render.checkClose() do
 		{544, 0}, --bottom right
 		{0, 0}, --bottom left
 	}
-	transformed = Render.transformImage(hyenajpegpng, homographymatrix[1][1], homographymatrix[2][1], homographymatrix[3][1], homographymatrix[4][1], homographymatrix[1][2], homographymatrix[2][2], homographymatrix[3][2], homographymatrix[4][2])
-	Render.mirrorImage(transformed, false)
+	transformed = Plush.transformImage(hyenajpegpng, homographymatrix[1][1], homographymatrix[2][1], homographymatrix[3][1], homographymatrix[4][1], homographymatrix[1][2], homographymatrix[2][2], homographymatrix[3][2], homographymatrix[4][2])
+	Plush.mirrorImage(transformed, false)
 	Render.renderImage(transformed, 0, 0, 1.0)
-	Render.killImage(transformed)]]
+	Plush.killImage(transformed)]]
 
 	if (drawFrame) then
 		Render.renderImage(WINTER_FRAMEBUFFER, 0, 0, 1.0, 0.0)

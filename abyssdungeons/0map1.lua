@@ -7,23 +7,23 @@ Plush.setPlayerRotation(0)
 if (imageVector) then
 	for i = 1, #imageVector do
 		if (imageVector[i - 1]) then
-			Render.killImage(imageVector[i - 1])
+			Plush.killImage(imageVector[i - 1])
 			imageVector[i - 1] = nil
 		end
 	end
 end
 
-wall1 = Render.loadPNG(rompath .. '/tiles/wall1.png')
-wall2 = Render.loadPNG(rompath .. '/tiles/wall2.png')
-wall3 = Render.loadPNG(rompath .. '/tiles/wall3.png')
-wall4 = Render.loadPNG(rompath .. '/tiles/wall4.png')
-wall5 = Render.loadPNG(rompath .. '/tiles/wall5.png')
-wall6 = Render.loadPNG(rompath .. '/tiles/wall6.png')
-plushiesolid = Render.loadPNG(rompath .. '/tiles/plushiesolid.png')
-transparent = Render.loadPNG(rompath .. '/tiles/transparent.png')
-roof = Render.loadPNG(rompath .. '/tiles/roof.png')
-walls = Render.loadPNG(rompath .. '/tiles/walls.png')
-wall7 = Render.loadPNG(rompath .. '/tiles/wall7.png')
+wall1 = Plush.loadPNG(rompath .. '/tiles/wall1.png')
+wall2 = Plush.loadPNG(rompath .. '/tiles/wall2.png')
+wall3 = Plush.loadPNG(rompath .. '/tiles/wall3.png')
+wall4 = Plush.loadPNG(rompath .. '/tiles/wall4.png')
+wall5 = Plush.loadPNG(rompath .. '/tiles/wall5.png')
+wall6 = Plush.loadPNG(rompath .. '/tiles/wall6.png')
+plushiesolid = Plush.loadPNG(rompath .. '/tiles/plushiesolid.png')
+transparent = Plush.loadPNG(rompath .. '/tiles/transparent.png')
+roof = Plush.loadPNG(rompath .. '/tiles/roof.png')
+walls = Plush.loadPNG(rompath .. '/tiles/walls.png')
+wall7 = Plush.loadPNG(rompath .. '/tiles/wall7.png')
 
 imageVector = {nil, wall1, wall2, wall3, wall4, wall5, wall6, plushiesolid, transparent, roof, walls, wall7, wall7}
 --				   0    1      2      3      4      5      6      7             8            9     10     11     12
@@ -122,7 +122,7 @@ eventTable = {}
 eventTable[1] = [[
 	for i = 1, #imageVector do
 		if (imageVector[i - 1]) then
-			Render.killImage(imageVector[i - 1])
+			Plush.killImage(imageVector[i - 1])
 			imageVector[i - 1] = nil
 		end
 	end
@@ -145,7 +145,7 @@ eventTable[1] = [[
 ]]
 eventTable[2] = [[
 	if (textsurface) then
-		Render.killImage(textsurface)
+		Plush.killImage(textsurface)
 		textsurface = nil
 	end
 	textsurface = Font.renderText('this door will take you back to town\ncontinue?\n\nz: confirm, x: cancel', meiyro25[1], 255, 255, 255, 255)
