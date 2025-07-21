@@ -1031,6 +1031,11 @@ while not Render.checkClose() do
 					alatch = false
 					Plush.movePlayer(movingdist, movingforward)
 					direction = direction + movingdirection
+					if (Plush.checkWall(targetx, targety, wallsVector)) then
+						Plush.setPlayerPosition(oldx, oldy)
+						targetx = oldx
+						targety = oldy
+					end
 				else
 					playerx = targetx
 					playery = targety
@@ -1091,7 +1096,7 @@ while not Render.checkClose() do
 					targeta = direction + 90
 					movingdist = 0
 					mlatch = true
-				elseif (input.key.space) then
+				elseif (input.key.space) and not (onput.key.space) then
 					targetx, targety = playerx, playery
 					movingdirection = 0
 					targeta = direction
@@ -1203,7 +1208,7 @@ while not Render.checkClose() do
 			if (alatch == false) then
 				Plush.raycast(WINTER_FRAMEBUFFER, threads)
 				alatch = true
-				--Plush.dither(WINTER_FRAMEBUFFER, 12.5, false)
+				Plush.dither(WINTER_FRAMEBUFFER, 12.5, false)
 				Plush.bilinearSolid(WINTER_FRAMEBUFFER)
 			end
 			Winter.renderStack()

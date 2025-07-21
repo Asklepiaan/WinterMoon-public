@@ -74,15 +74,15 @@ floorVector = {
 	{ 10, 10, 10, 10, 10, 10, 10, 10, 10},
 }
 floorOffsetVector = {
-	{-16,-16,-16,-16,-16,-16,-16,-16,-16},
-	{-16,-16,-16,-16,-16,-16,-16,-16,-16},
-	{-16,-16,-16,-16,-16,-16,-16,-16,-16},
-	{-16,-16,-16,-16,-16,-16,-16,-16,-16},
-	{-16,-16,-16,-16,-16,-16,-16,-16,-16},
-	{-16,-16,-16,-16,-16,-16,-16,-16,-16},
-	{-16,-16,-16,-16,-16,-16,-16,-16,-16},
-	{-16,-16,-16,-16,-16,-16,-16,-16,-16},
-	{-16,-16,-16,-16,-16,-16,-16,-16,-16},
+	{  0,  0,  0,  0,  0,  0,  0,  0,  0},
+	{  0,  0,  0,  0,  0,  0,  0,  0,  0},
+	{  0,  0,  0,  0,  0,  0,  0,  0,  0},
+	{  0,  0,  0,  0,  0,  0,  0,  0,  0},
+	{  0,  0,  0,  0,  0,  0,  0,  0,  0},
+	{  0,  0,  0,  0,  0,  0,  0,  0,  0},
+	{  0,  0,  0,  0,  0,  0,  0,  0,  0},
+	{  0,  0,  0,  0,  0,  0,  0,  0,  0},
+	{  0,  0,  0,  0,  0,  0,  0,  0,  0},
 }
 eastVector = {
 	{  0,  0,  0,  0,  0,  0,  0,  0,  0},
@@ -131,10 +131,10 @@ eventTable[1] = [[
 	wy = playery
 
 	location = 0
-	file = io.open(rompath .. '/scripts/abyssdungeons/' .. location .. 'map0.lua')
+	file = io.open(rompath .. '/scripts/abyssdungeons/' .. location .. 'map2.lua')
 	if (file) then
 		file:close()
-		dofile(rompath .. '/scripts/abyssdungeons/' .. location .. 'map0.lua')
+		dofile(rompath .. '/scripts/abyssdungeons/' .. location .. 'map2.lua')
 	else
 		dofile(rompath .. '/scripts/abyssdungeons/0map0.lua')
 	end
