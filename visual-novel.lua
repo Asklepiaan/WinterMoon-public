@@ -1,3 +1,4 @@
+WINTER_FRAMERATE = 1000 / 30
 Render.spawnWindow(WINTER_SCREEN_X, WINTER_SCREEN_Y, '<game name> | WinterMoon Engine ' .. WINTER_ENGINE_VERSION .. ' | ' .. WINTER_ENGINE_POSTFIX)
 Render.setup2D(0, WINTER_SCREEN_X, 0, WINTER_SCREEN_Y)
 
@@ -21,7 +22,7 @@ frames    = 0
 layers    = 5
 
 mode           = WINTER_MENU_MAIN
-oldAudio       = 0
+oldAudio       = 1
 loadOffset     = 0
 append         = Winter.getPath() .. '../Resources/package'
 
@@ -30,8 +31,7 @@ load(file:read('*a'))()
 file:close()
 
 playlist = {
-	[1] = {Winter.getPath() .. '../Resources/package/audio/Dracortia/Cherry_Kiss_rev3.mp3', 1},
-	[2] = {Winter.getPath() .. '../Resources/package/audio/click.wav', 2},
+	Audio.open(Winter.getPath() .. '../Resources/package/audio/Dracortia/Cherry_Kiss_rev3.mp3'),
 }
 
 vnui        = Winter.getPath() .. '../Resources/package/ui/testui.png'
@@ -64,10 +64,6 @@ smalliapakan = {nil, 0,} --japanese
 smallnomyrian = {nil, 0,} --korean
 smallvastan = {nil, 0,} --cyrillic
 smallmidrick = {nil, 0,} --make them speak dutch or something idk
-
-for i = 1, #playlist do
-	Audio.open(playlist[i][1], playlist[i][2])
-end
 
 weatherEffect = WINTER_WEATHER_CLEAR
 weatherString = ''
@@ -154,7 +150,7 @@ for i = 1, #pages do
 	pages[i].title = Winter.processRunes(pages[i].title)
 end
 
-WINTER_AUDIO_OFFSET = 18446744073709551546
+WINTER_AUDIO_OFFSET = 184467440
 latched = false
 drawFrame = false
 pageChange = false
@@ -194,11 +190,6 @@ while not Render.checkClose() do
 	onput.mouse.x = WINTER_MOUSE_X
 	onput.mouse.y = WINTER_MOUSE_Y
 	onput.mouse.position = {WINTER_MOUSE_1, WINTER_MOUSE_2, WINTER_MOUSE_3}
-
-	if (debugger == true) then
-		debugentries = debugentries + 1
-		debuglog = debuglog .. debugentries .. ": Audio remaining: " .. WINTER_AUDIO_OFFSET - Winter.getGlobalTime() .. "ms\n"
-	end
 
 	drawFrame = true
 	Winter.renderStack()
@@ -328,9 +319,7 @@ while not Render.checkClose() do
 			else
 				renderQueue[#renderQueue + 1] = {identifier = WINTER_GAME_LOAD, layer = WINTER_LAYER_FOREGROUND, surface = nil, text = '<runes>No Restores</runes>', text2 = '', x = 3, y = 72, fw = nil, w = nil, h = nil, colour = cbrownink, type = WINTER_TEXT_SLIDE_RIGHT, font = azmyrian, scale = 1.0, rotation = 0}
 			end
-			WINTER_AUDIO_PLAYING, WINTER_AUDIO_OFFSET = Audio.play(playlist[1][2], true, 0)
-			WINTER_AUDIO_OFFSET = Winter.getGlobalTime() + WINTER_AUDIO_OFFSET
-			oldAudio = 1
+			Audio.play(playlist[1], true, 0)
 		end
 
 		if (pressed > 0) then
@@ -585,14 +574,15 @@ while not Render.checkClose() do
 			WINTER_RENDER_S12 = renderQueue[WINTER_RENDER_12]
 			WINTER_RENDER_S13 = renderQueue[WINTER_RENDER_13]
 
-			if not (oldAudio == pages[pagenum].music) then
+			if not (oldAudio == pages[pagenum].music) and (pagenum > 1) then
 				if (loadOffset > 0) then
 					offset = loadOffset
 					loadOffset = 0
 				else
 					offset = pages[pagenum].musicFallback
 				end
-				WINTER_AUDIO_PLAYING, WINTER_AUDIO_OFFSET = Audio.play(playlist[pages[pagenum].music][2], true, offset)
+				Audio.pause(playlist[pages[pagenum - 1].music])
+				Audio.play(playlist[pages[pagenum].music], true, offset)
 				oldAudio = pages[pagenum].music
 			end
 
