@@ -3,7 +3,7 @@ Development Tips
 		Hire an artist or try swapping out the default assets
 		Menu and UI are stored as .png files while fonts use .ttf
 		If your UI doesnt line up with your text you can adjust padding with the padding variable in pages.rb and font[2] variable in graphics.lua
-	My character heights dont fit properly
+	My character heights dont fit properly in the visual novel sample
 		The camera is by default 6ft above the ground and has a 5'3"x2'11" view window
 		Character feet position is 6'3" below the default height
 		Size your characters with a 1inch^2 = 15.41px^2 with no padding and your characters should fit properly
@@ -14,7 +14,7 @@ Development Tips
 	The minimum specs are way higher than my machine!!
 		The minimum specs are the minimum tested specs, Asklepian does not own any low spec intel macs capable of running os 11. Your machine will probably run your game just fine.
 	The 3d camera is at the wrong height
-		Plush.setPlayerHeight(feet + (inches / 12))
+		Plush.setPlayerHeight(feet + (inches / 12)) or Plush.setPlayerHeight(feet, inches)
 	The 3d renderer runs very slow
 		Try changing the number of threads with Plush.threads(), the default threadding is 8 threads.
 		This will also change the speed of Render.blitImage() which can result in faster speeds than using Render.renderImage() with GLFW.
@@ -84,8 +84,8 @@ Lua Functions
 		renderStack()						render the renderQueue
 
 	Audio.
-		open(string, id)				open audio file, return audio index and success boolean
-		play(number, boolean, number)	play audio at specified index and timestamp, boolean loops, return success boolean and track length
+		open(string)					open audio file, return track object and success boolean
+		play(track, boolean, number)	play audio at specified timestamp, boolean loops, return success boolean
 		pause(number)					pause audio at a specified index, return progress
 		free()							clear a track index
 		clear()							clear audio vector
@@ -132,54 +132,49 @@ Lua Functions
 		bilinearSolid(image)												apply bilinear filtering to an image without resizing
 		movePlayer(distance, x, y)											get the location if the player were to move forward or backward if true, side to side if false
 		createImage(width, height, red, green, blue, aether)				create a textureless PlushImage
+		checkImage(image)													return true if a valid image is provided, clean corrupted memory if not
+		saveImage(path, image)												save an image to disk
+		blitImage(target, source, x, y, blend, scale, rotation)				render an image to another image
+		transformImage(image, x1, x2, x3, x4, y1, y2, y3, y4)				perspective transform an image into a new buffer
+		modifyImage(image, node, r, g, b, a)								apply image pseudo shaders to an image
+		mirrorImage(image, bool)											mirror an image, y axis if false, x axis if true
+		killImage(image)													free an image from memory, when using GLFW this will also free a gpu texture
+		imageSize(image)													return the width and height of an image
+		loadPNG(path)														return an image and the height, width of the image
 																			User facing functions
 		checkWall(x, y)														check if a position is in a wall or not
 		createCube(x, y, sx, sy, z)											create a 3d cube
 		createFace(x, y, sx, sy, ox, oy, direction, horizontal)				create a 3d face
-		round90(number)														round a number to its nearest 90
+		round90(number, step)												round a number to its nearest multiple of step
+		within(number, range, target)										check if a number is within a range of another number
 
-	Metal.														!!!Memory management not handled by Lua!!!
-		saveImage(path, image)									save an image to disk
-		blitImage(target, source, x, y, blend, scale, rotation)	render an image to another image
-		renderImage(image)										render an image to the window
-		transformImage(image, x1, x2, x3, x4, y1, y2, y3, y4)	perspective transform an image into a new buffer
-		modifyImage(image, node, r, g, b, a)					apply image pseudo shaders to an image
-		mirrorImage(image, bool)								mirror an image, y axis if false, x axis if true
-		killImage(image)										free an image from memory
-		imageSize(image)										return the width and height of an image
-		loadPNG(path)											return an image and the height, width of the image
-		updateInput()											push the current HID state, this does not return any data but sets several varaibles in the stack
-		forceUpdate()											force the window up update
-		getTitle()												return the window title
-		getWindow()												return an image of the current window state
-		setTitle(string)										set a new title for the window
-		clearBuffer(r, g, b)									empty the framebuffer and fill it with a colour
-		checkClose()											return true if the window should close
-		killWindow()											kill the window
-		spawnWindow(x, y, string)								create the window, this window cannot be resized and only one can exist at a time
+	Metal.							!!!Memory management not handled by Lua!!!
+		renderImage(image)			render an image to the window
+		updateInput()				push the current HID state, this does not return any data but sets several varaibles in the stack
+		forceUpdate()				force the window up update
+		getTitle()					return the window title
+		getWindow()					return an image of the current window state
+		setTitle(string)			set a new title for the window
+		clearBuffer(r, g, b)		empty the framebuffer and fill it with a colour
+		checkClose()				return true if the window should close
+		killWindow()				kill the window
+		spawnWindow(x, y, string)	create the window, this window cannot be resized and only one can exist at a time
 
-	GLFW.														!!!Memory management not handled by Lua!!!
-		saveImage(path, image)									save an image to disk
-		blitImage(target, source, x, y, blend, scale, rotation)	render an image to another image
-		renderImage(image, x, y, scale, rotation)				render an image to the window and create a gpu texture if it doesnt exist
-		transformImage(image, x1, x2, x3, x4, y1, y2, y3, y4)	perspective transform an image into a new textureless buffer
-		modifyImage(image, node, r, g, b, a)					apply image pseudo shaders to a textureless image
-		mirrorImage(image, bool)								mirror a textureless image, y axis if false, x axis if true
-		killImage(image)										free an image and texture from memory
-		killTexture(image)										free only the gpu texture from memory
-		imageSize(image)										return the width and height of an image
-		loadPNG(path)											return a textureless image and the height, width of the image
-		updateInput()											push the current HID state, this does not return any data but sets several varaibles in the stack
-		forceUpdate()											force the window up update
-		exchangeBuffer()										swap the render buffers
-		setup2D(x1, x2, y1, y2)									adjust renderer to render in pseudo2D
-		getTitle()												return the window title
-		getWindow()												return a textureless image of the current framebuffer
-		setTitle(string)										set a new title for the window
-		clearBuffer(r, g, b, a)									empty the framebuffer and fill it with a colour
-		checkClose()											return true if the window should close
-		killWindow()											kill the window
-		spawnWindow(x, y, string)								create the window, this window cannot be resized and only one can exist at a time
+	GLFW.											!!!Memory management not handled by Lua!!!
+		renderImage(image, x, y, scale, rotation)	render an image to the window and create a gpu texture if it doesnt exist
+		killTexture(image)							free a gpu texture from memory
+		loadPNG(path)								return a textureless image and the height, width of the image
+		updateInput()								push the current HID state, this does not return any data but sets several varaibles in the stack
+		forceUpdate()								force the window up update
+		exchangeBuffer()							swap the render buffers
+		setup2D(x1, x2, y1, y2)						adjust renderer to render in pseudo2D
+		getTitle()									return the window title
+		getWindow()									return a textureless image of the current framebuffer
+		setTitle(string)							set a new title for the window
+		clearBuffer(r, g, b, a)						empty the framebuffer and fill it with a colour
+		checkClose()								return true if the window should close
+		killWindow()								kill the window
+		spawnWindow(x, y, string)					create the window, this window cannot be resized and only one can exist at a time
 
 Lua Variables
 	Render					rendering functions table, this is automatically determined by the engine and filled in with copies of GLFW or metal
@@ -188,6 +183,9 @@ Lua Variables
 		_ENABLED			bool to check if GLFW functions exist
 	QUARTZ_ENABLED			bool to check if Quartz functions exist
 	METAL_ENABLED			bool to check if metal functions exist
+	MIXER_
+		ENABLED				bool to check if audio mixer support is enabled
+		SKIP_SLIDE			bool to check if click noises should be skipped when using text slide render nodes
 	Ruby					mruby functions table
 	Winter					wintermoon functions table
 	Font					font functions table

@@ -82,11 +82,11 @@ metal renderer hangs entire system and external processes sometimes - possibly f
 0.8 release requirements
 
 port rpgmaker clone from sdl2
-simplify weather effects in visual novek
+simplify weather effects in visual novel
 optimise and adjust choice buttons in visual novel
 create global menu system
 port project abyss engine
-add multiple audio track processing
+add multiple audio track processing - complete
 
 0.8 release additions
 
@@ -126,13 +126,44 @@ added Plush.dontmovePlayer()
 added Plush.round90()
 added Plush.createImage()
 added textframebuffer debug flag
+added Plush.within()
+added Plush.checkImage()
+rebound GLFW.saveImage() to Plush.saveImage()
+rebound Metal.saveImage() to Plush.saveImage()
+rebound Quartz.saveImage() to Plush.saveImage()
+rebound GLFW.blitImage() to Plush.blitImage()
+rebound Metal.blitImage() to Plush.blitImage()
+rebound Quartz.blitImage() to Plush.blitImage()
+rebound GLFW.transformImage() to Plush.transformImage()
+rebound Metal.transformImage() to Plush.transformImage()
+rebound Quartz.transformImage() to Plush.transformImage()
+rebound GLFW.modifyImage() to Plush.modifyImage()
+rebound Metal.modifyImage() to Plush.modifyImage()
+rebound Quartz.modifyImage() to Plush.modifyImage()
+rebound GLFW.mirrorImage() to Plush.mirrorImage()
+rebound Metal.mirrorImage() to Plush.mirrorImage()
+rebound Quartz.mirrorImage() to Plush.mirrorImage()
+rebound GLFW.killImage() to Plush.killImage()
+rebound Metal.killImage() to Plush.killImage()
+rebound Quartz.killImage() to Plush.killImage()
+rebound GLFW.imageSize() to Plush.imageSize()
+rebound Metal.imageSize() to Plush.imageSize()
+rebound Quartz.imageSize() to Plush.imageSize()
+rebound GLFW.loadPNG() to Plush.loadPNG()
+rebound Metal.loadPNG() to Plush.loadPNG()
+rebound Quartz.loadPNG() to Plush.loadPNG()
+added experimental support for macOS 10.5 ppc32 (10.5-10.7 x86 through Rosetta)
+changed from cpp11 to cpp17
+added makefile optional targets to set host arch properly
+set text slide modes to make clicking noises
 
 0.8 release bugs
 
 file write checks on read only system crash
-metal renderer occasinally hangs other apps
+metal renderer occasinally hangs other apps - fixed
 Plush.sortVertex() improperly applies painter
 Plush.sortVertex() improperly culls some faces
 Plush.createFace() is not written yet
-Plush.project() does not support roll yet
-rays cast into void now demolish performance
+Plush.project() does not support roll yet - will not be added
+rays cast into void now demolish performance - fixed
+higher frame rates prevent text slide clicks from playing
