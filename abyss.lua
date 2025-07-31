@@ -1206,7 +1206,7 @@ while not Render.checkClose() do
 			renderQueue[10].x = 901 + itorch
 
 			if (alatch == false) then
-				Plush.raycast(WINTER_FRAMEBUFFER, threads)
+				Plush.raycast(WINTER_FRAMEBUFFER)
 				alatch = true
 				Plush.dither(WINTER_FRAMEBUFFER, 12.5, false)
 				Plush.bilinearSolid(WINTER_FRAMEBUFFER)

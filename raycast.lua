@@ -27,18 +27,105 @@ signeast = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/signeas
 signnorth = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/signnorth.png')
 furry = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/furry.png')
 monji = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/monji.png')
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/walls.png')
+Plush.insertReflection(walls, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/wall1.png')
+Plush.insertReflection(wall1, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/wall2.png')
+Plush.insertReflection(wall2, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/wall3.png')
+Plush.insertReflection(wall3, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/wall4.png')
+Plush.insertReflection(wall4, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/wall5.png')
+Plush.insertReflection(wall5, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/wall6.png')
+Plush.insertReflection(wall6, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/pog.png')
+Plush.insertReflection(pogwall, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/floor.png')
+Plush.insertReflection(roof, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/roof.png')
+Plush.insertReflection(floor, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/coheth.png')
+Plush.insertReflection(coheth, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/cohetht.png')
+Plush.insertReflection(cohetht, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/bricks1.png')
+Plush.insertReflection(bricks1, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/bricks2.png')
+Plush.insertReflection(bricks2, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/bricks3.png')
+Plush.insertReflection(bricks3, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/bricks4.png')
+Plush.insertReflection(bricks4, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/bricks5.png')
+Plush.insertReflection(bricks5, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/aestya.png')
+Plush.insertReflection(aestya, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/plushiesolid.png')
+Plush.insertReflection(plushiesolid, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/transparent.png')
+Plush.insertReflection(transparent, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/signeast.png')
+Plush.insertReflection(signeast, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/signnorth.png')
+Plush.insertReflection(signnorth, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/furry.png')
+Plush.insertReflection(furry, reflection)
+Plush.killImage(reflection)
+reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/monji.png')
+Plush.insertReflection(monji, reflection)
+Plush.killImage(reflection)
+whitebox = Plush.createImage(16, 16, 0, 0, 0, 0)
+reflection = Plush.createImage(16, 16, 0, 0, 0, 0)
+whiteline = Plush.createImage(1, 16, 255, 255, 255, 255)
+for i = 1, 8 do
+	Plush.blitImage(whitebox, whiteline, i * 2, 0, false, 1.0, 0.0)
+end
+reflection = Plush.createImage(16, 16, 0, 0, 0, 0)
+Plush.modifyImage(whiteline, WINTER_COLOUR_FILL, 100, 100, 100, 100)
+for i = 1, 8 do
+	Plush.blitImage(reflection, whiteline, 8, 8, true, 1.0, i * 22.5)
+end
+Plush.insertReflection(whitebox, reflection)
+Plush.killImage(whiteline)
+Plush.killImage(reflection)
+Plush.setRaytrace(1)
 
 --Plush.killImage(WINTER_FRAMEBUFFER)
 --WINTER_FRAMEBUFFER = Plush.loadPNG(Winter.getPath() .. '../Resources/package/ui/empty-480x272.png')
 
-imageVector = {nil, walls, floor, roof, pogwall, wall1, wall2, wall3, wall4, wall5, wall6, coheth, bricks1, bricks2, bricks3, bricks4, bricks5, aestya, cohetht, plushiesolid, transparent, signeast, signnorth, furry, monji}
---				0	1		2		3	4			5	6		7		8		9	10		11		12		13			14		15		16		17		18			19			20			21			22			23	24
+imageVector = {nil, walls, floor, roof, pogwall, wall1, wall2, wall3, wall4, wall5, wall6, coheth, bricks1, bricks2, bricks3, bricks4, bricks5, aestya, cohetht, plushiesolid, transparent, signeast, signnorth, furry, monji, whitebox}
+--				0	1		2		3	4			5	6		7		8		9	10		11		12		13			14		15		16		17		18			19			20			21			22			23	24		25
 debugroom = {
 	startx = 24, starty = 24,
 	renderDistance = 160,
 	fogColour = {0, 0, 255},
 	wallsVector = {
-		{ 12, 12, 16, 12, 12,  4,  4,  1, 19, 20, 19, 19,  0},
+		{ 12, 25, 16, 25, 12,  4,  4,  1, 19, 20, 19, 19,  0},
 		{ 12,  0,  0,  0, 12,  0,  0,  5,  0, 18,  0, 19},
 		{ 13,  0, 15,  0, 12,  0,  0,  5,  0,  0,  0, 19},
 		{ 12,  0,  0,  0, 12,  0,  0,  6,  0,  0,  0, 12, 12},
@@ -49,9 +136,9 @@ debugroom = {
 	},
 	floorVector = {
 		{ 12, 12, 12, 12, 12, 19, 19, 19, 19, 19, 19, 19, 19},
-		{ 12, 12, 12, 12, 12, 19, 11, 19,  3,  3,  3,  3},
-		{ 12, 12, 12, 12, 12, 19, 19, 19,  3,  3,  3,  3},
-		{ 12, 12, 12, 12, 12, 19, 19, 19,  3,  3,  3,  3,  3},
+		{ 12, 25, 25, 25, 12, 19, 11, 19,  3,  3,  3,  3},
+		{ 12, 25, 12, 25, 12, 19, 19, 19,  3,  3,  3,  3},
+		{ 12, 25, 25, 25, 12, 19, 19, 19,  3,  3,  3,  3,  3},
 		{ 12, 12, 12, 12, 12,  3,  2,  3,  3,  3,  3,  3,  3},
 		{  2,  3,  2,  3,  2,  3,  2,  3,  3,  3,  3,  3,  3},
 		{  2,  3,  2,  3,  2,  3,  2,  3,  3,  3,  3,  3,  3},
@@ -59,9 +146,9 @@ debugroom = {
 	},
 	roofVector = {
 		{ 12, 12, 12, 12, 12, 19, 19, 19, 19, 19, 19, 19, 19},
-		{ 12, 12, 12, 12, 12, 19, 11, 19,  2,  2,  2,  2},
-		{ 12, 12, 12, 12, 12, 19, 19, 19,  2,  2,  2,  2},
-		{ 12, 12, 12, 12, 12, 19, 19, 19, 12, 12, 12, 12, 12},
+		{ 12, 25, 25, 25, 12, 19, 11, 19,  2,  2,  2,  2},
+		{ 12, 25, 12, 25, 12, 19, 19, 19,  2,  2,  2,  2},
+		{ 12, 25, 25, 25, 12, 19, 19, 19, 12, 12, 12, 12, 12},
 		{ 12, 12, 12, 12, 12,  2,  3,  2, 12, 12, 12, 12, 12},
 		{  3,  2,  3,  2,  3,  2,  3,  2, 12, 12, 12, 12, 12},
 		{  3,  2,  3,  2,  3,  2,  3,  2, 12, 12, 12, 12, 12},
@@ -311,6 +398,51 @@ abyssintro = {
 	},
 }
 
+quads = {
+	{
+		tl = {80, 16, 48},
+		tr = {112, 16, 48},
+		br = {112, -16, 16},
+		bl = {80, -16, 16},
+		texture = 11
+	},
+	{
+		tl = {112, 16, 16},
+		tr = {80, 16, 16},
+		br = {80, -16, -16},
+		bl = {112, -16, -16},
+		texture = 17
+	},
+	{
+		tl = {80, 16, 16},
+		tr = {80, 16, 48},
+		br = {80, -16, 16},
+		bl = {80, -16, -16},
+		texture = 19
+	},
+	{
+		tl = {112, 16, 48},
+		tr = {112, 16, 16},
+		br = {112, -16, -16},
+		bl = {112, -16, 16},
+		texture = 19
+	},
+	{
+		tl = {80, 16, 48},
+		tr = {112, 16, 48},
+		br = {112, 16, 16},
+		bl = {80, 16, 16},
+		texture = 24
+	},
+	{
+		tl = {80, -16, 16},
+		tr = {112, -16, 16},
+		br = {112, -16, -16},
+		bl = {80, -16, -16},
+		texture = 19
+	}
+}
+
 --[[for i = 1, #debugroom.roofOffsetVector do
 	for j = 1, #debugroom.roofOffsetVector[i] do
 		debugroom.roofOffsetVector[i][j] = debugroom.roofOffsetVector[i][j] + 16
@@ -323,7 +455,7 @@ for i = 1, #debugroom.floorOffsetVector do
 end]]
 
 testroom = debugroom
-Plush.setMap(testroom.wallsVector, testroom.roofVector, testroom.floorVector, testroom.roofOffsetVector, testroom.floorOffsetVector, imageVector, testroom.eastVector, testroom.northVector)
+Plush.setMap(testroom.wallsVector, testroom.roofVector, testroom.floorVector, testroom.roofOffsetVector, testroom.floorOffsetVector, imageVector, testroom.eastVector, testroom.northVector, quads)
 Plush.setRenderDistance(testroom.renderDistance)
 Plush.fog(testroom.fogColour[1], testroom.fogColour[2], testroom.fogColour[3])
 Plush.setFov(90)
@@ -424,7 +556,7 @@ while not Metal.checkClose() do
 	Plush.setAccuracy(Winter.round(accuracy, 0))
 
 	if (alatch == false) then
-		Plush.raycast(WINTER_FRAMEBUFFER, threads)
+		Plush.raycast(WINTER_FRAMEBUFFER)
 		alatch = true
 		--Plush.dither(WINTER_FRAMEBUFFER, 12.5, false)
 		Plush.bilinearSolid(WINTER_FRAMEBUFFER)

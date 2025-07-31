@@ -130,32 +130,30 @@ added Plush.within()
 added Plush.checkImage()
 rebound GLFW.saveImage() to Plush.saveImage()
 rebound Metal.saveImage() to Plush.saveImage()
-rebound Quartz.saveImage() to Plush.saveImage()
 rebound GLFW.blitImage() to Plush.blitImage()
 rebound Metal.blitImage() to Plush.blitImage()
-rebound Quartz.blitImage() to Plush.blitImage()
 rebound GLFW.transformImage() to Plush.transformImage()
 rebound Metal.transformImage() to Plush.transformImage()
-rebound Quartz.transformImage() to Plush.transformImage()
 rebound GLFW.modifyImage() to Plush.modifyImage()
 rebound Metal.modifyImage() to Plush.modifyImage()
-rebound Quartz.modifyImage() to Plush.modifyImage()
 rebound GLFW.mirrorImage() to Plush.mirrorImage()
 rebound Metal.mirrorImage() to Plush.mirrorImage()
-rebound Quartz.mirrorImage() to Plush.mirrorImage()
 rebound GLFW.killImage() to Plush.killImage()
 rebound Metal.killImage() to Plush.killImage()
-rebound Quartz.killImage() to Plush.killImage()
 rebound GLFW.imageSize() to Plush.imageSize()
 rebound Metal.imageSize() to Plush.imageSize()
-rebound Quartz.imageSize() to Plush.imageSize()
 rebound GLFW.loadPNG() to Plush.loadPNG()
 rebound Metal.loadPNG() to Plush.loadPNG()
-rebound Quartz.loadPNG() to Plush.loadPNG()
 added experimental support for macOS 10.5 ppc32 (10.5-10.7 x86 through Rosetta)
 changed from cpp11 to cpp17
 added makefile optional targets to set host arch properly
 set text slide modes to make clicking noises
+added a variable with hardware metadata
+added ray tracing
+added Plush.insertReflection()
+added Plush.setReflection()
+added Plush.setRaytrace()
+fixed arbitrary quad support in ray tracer
 
 0.8 release bugs
 
