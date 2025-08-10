@@ -27,6 +27,7 @@ signeast = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/signeas
 signnorth = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/signnorth.png')
 furry = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/furry.png')
 monji = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/monji.png')
+--[[
 reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/walls.png')
 Plush.insertReflection(walls, reflection)
 Plush.killImage(reflection)
@@ -54,9 +55,11 @@ Plush.killImage(reflection)
 reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/floor.png')
 Plush.insertReflection(roof, reflection)
 Plush.killImage(reflection)
+]]
 reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/roof.png')
 Plush.insertReflection(floor, reflection)
 Plush.killImage(reflection)
+--[[
 reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/coheth.png')
 Plush.insertReflection(coheth, reflection)
 Plush.killImage(reflection)
@@ -99,7 +102,9 @@ Plush.killImage(reflection)
 reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/monji.png')
 Plush.insertReflection(monji, reflection)
 Plush.killImage(reflection)
+]]
 whitebox = Plush.createImage(16, 16, 0, 0, 0, 0)
+--[[
 reflection = Plush.createImage(16, 16, 0, 0, 0, 0)
 whiteline = Plush.createImage(1, 16, 255, 255, 255, 255)
 for i = 1, 8 do
@@ -114,9 +119,10 @@ Plush.insertReflection(whitebox, reflection)
 Plush.killImage(whiteline)
 Plush.killImage(reflection)
 Plush.setRaytrace(1)
-
+]]
 --Plush.killImage(WINTER_FRAMEBUFFER)
 --WINTER_FRAMEBUFFER = Plush.loadPNG(Winter.getPath() .. '../Resources/package/ui/empty-480x272.png')
+Plush.fog(15, 0, 10)
 
 imageVector = {nil, walls, floor, roof, pogwall, wall1, wall2, wall3, wall4, wall5, wall6, coheth, bricks1, bricks2, bricks3, bricks4, bricks5, aestya, cohetht, plushiesolid, transparent, signeast, signnorth, furry, monji, whitebox}
 --				0	1		2		3	4			5	6		7		8		9	10		11		12		13			14		15		16		17		18			19			20			21			22			23	24		25
@@ -136,9 +142,9 @@ debugroom = {
 	},
 	floorVector = {
 		{ 12, 12, 12, 12, 12, 19, 19, 19, 19, 19, 19, 19, 19},
-		{ 12, 25, 25, 25, 12, 19, 11, 19,  3,  3,  3,  3},
-		{ 12, 25, 12, 25, 12, 19, 19, 19,  3,  3,  3,  3},
-		{ 12, 25, 25, 25, 12, 19, 19, 19,  3,  3,  3,  3,  3},
+		{ 12, 12, 12, 12, 12, 19, 11, 19,  3,  3,  3,  3},
+		{ 12, 12, 12, 12, 12, 19, 19, 19,  3,  3,  3,  3},
+		{ 12, 12, 12, 12, 12, 19, 19, 19,  3,  3,  3,  3,  3},
 		{ 12, 12, 12, 12, 12,  3,  2,  3,  3,  3,  3,  3,  3},
 		{  2,  3,  2,  3,  2,  3,  2,  3,  3,  3,  3,  3,  3},
 		{  2,  3,  2,  3,  2,  3,  2,  3,  3,  3,  3,  3,  3},
@@ -146,9 +152,9 @@ debugroom = {
 	},
 	roofVector = {
 		{ 12, 12, 12, 12, 12, 19, 19, 19, 19, 19, 19, 19, 19},
-		{ 12, 25, 25, 25, 12, 19, 11, 19,  2,  2,  2,  2},
-		{ 12, 25, 12, 25, 12, 19, 19, 19,  2,  2,  2,  2},
-		{ 12, 25, 25, 25, 12, 19, 19, 19, 12, 12, 12, 12, 12},
+		{ 12, 12, 12, 12, 12, 19, 11, 19,  2,  2,  2,  2},
+		{ 12, 12, 12, 12, 12, 19, 19, 19,  2,  2,  2,  2},
+		{ 12, 12, 12, 12, 12, 19, 19, 19, 12, 12, 12, 12, 12},
 		{ 12, 12, 12, 12, 12,  2,  3,  2, 12, 12, 12, 12, 12},
 		{  3,  2,  3,  2,  3,  2,  3,  2, 12, 12, 12, 12, 12},
 		{  3,  2,  3,  2,  3,  2,  3,  2, 12, 12, 12, 12, 12},
@@ -457,7 +463,7 @@ end]]
 testroom = debugroom
 Plush.setMap(testroom.wallsVector, testroom.roofVector, testroom.floorVector, testroom.roofOffsetVector, testroom.floorOffsetVector, imageVector, testroom.eastVector, testroom.northVector, quads)
 Plush.setRenderDistance(testroom.renderDistance)
-Plush.fog(testroom.fogColour[1], testroom.fogColour[2], testroom.fogColour[3])
+--Plush.fog(testroom.fogColour[1], testroom.fogColour[2], testroom.fogColour[3])
 Plush.setFov(90)
 Plush.setPlayerHeight(5, 7)
 WINTER_FRAMERATE = 1000 / 75
