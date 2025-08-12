@@ -962,6 +962,13 @@ while not Render.checkClose() do
 			},
 		}
 
+		quads = {{
+			tl = {0, 0, 0},
+			tr = {0, 0, 0},
+			br = {0, 0, 0},
+			bl = {0, 0, 0},
+			texture = 0
+		},}
 		playerx = -1; playery = -1
 		alatch = false
 		mlatch = false
@@ -1165,22 +1172,22 @@ while not Render.checkClose() do
 			tileY = Winter.round((playery + 8) / 16, 0)
 			if (eastVector[tileX][tileY] == doorclosed) then
 				eastVector[tileX][tileY] = doorbuffer
-				Plush.setMap(wallsVector, roofVector, floorVector, roofOffsetVector, floorOffsetVector, imageVector, eastVector, northVector)
+				Plush.setMap(wallsVector, roofVector, floorVector, roofOffsetVector, floorOffsetVector, imageVector, eastVector, northVector, quads)
 			end
 			if (northVector[tileX][tileY] == doorclosed) then
 				northVector[tileX][tileY] = doorbuffer
-				Plush.setMap(wallsVector, roofVector, floorVector, roofOffsetVector, floorOffsetVector, imageVector, eastVector, northVector)
+				Plush.setMap(wallsVector, roofVector, floorVector, roofOffsetVector, floorOffsetVector, imageVector, eastVector, northVector, quads)
 			end
 			for i = 1, #eastVector do
 				for j = 1, #eastVector[i] do
 					if (i ~= tileX) and (j ~= tileY) then
 						if (eastVector[i][j] == doorbuffer) then
 							eastVector[i][j] = doorclosed
-							Plush.setMap(wallsVector, roofVector, floorVector, roofOffsetVector, floorOffsetVector, imageVector, eastVector, northVector)
+							Plush.setMap(wallsVector, roofVector, floorVector, roofOffsetVector, floorOffsetVector, imageVector, eastVector, northVector, quads)
 						end
 						if (northVector[i][j] == doorbuffer) then
 							northVector[i][j] = doorclosed
-							Plush.setMap(wallsVector, roofVector, floorVector, roofOffsetVector, floorOffsetVector, imageVector, eastVector, northVector)
+							Plush.setMap(wallsVector, roofVector, floorVector, roofOffsetVector, floorOffsetVector, imageVector, eastVector, northVector, quads)
 						end
 					end
 				end

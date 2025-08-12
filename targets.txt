@@ -154,6 +154,7 @@ added Plush.insertReflection()
 added Plush.setReflection()
 added Plush.setRaytrace()
 fixed arbitrary quad support in ray tracer
+switched from ray tracing to path tracing
 
 0.8 release bugs
 
@@ -165,3 +166,4 @@ Plush.createFace() is not written yet
 Plush.project() does not support roll yet - will not be added
 rays cast into void now demolish performance - fixed
 higher frame rates prevent text slide clicks from playing
+light paths have fucky hit detection with walls

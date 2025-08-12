@@ -3,6 +3,20 @@ framecolour = {255, 0, 255}
 drawFrame = true
 frames = 0
 
+playerx = 0
+playery = 0
+playerh = 5 * (7 / 12)
+
+function setLights(x, y, z)
+	Plush.clearLights()
+	Plush.spawnLight(16 + 8, 16 + 8, 4, 1.0 * 255, 0.6 * 255, 0.2 * 255, 37)
+	Plush.spawnLight(16 + 7, 48 + 8, 8, 0.3 * 255, 0.5 * 255, 1.0 * 255, 48)
+	Plush.spawnLight(100, 100, 8, 1.0 * 255, 1.0 * 255, 1.0 * 255, 32)
+	Plush.spawnLight(80, 168, -16, 1.0 * 255, 1.0 * 255, 1.0 * 255, 320)
+	Plush.spawnLight(x, y, z, 1.0 * 255, 0.0 * 255, 0.1 * 255, 24)
+end
+
+
 walls = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/walls.png')
 wall1 = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/wall1.png')
 wall2 = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/wall2.png')
@@ -145,9 +159,9 @@ debugroom = {
 		{ 12, 12, 12, 12, 12, 19, 11, 19,  3,  3,  3,  3},
 		{ 12, 12, 12, 12, 12, 19, 19, 19,  3,  3,  3,  3},
 		{ 12, 12, 12, 12, 12, 19, 19, 19,  3,  3,  3,  3,  3},
-		{ 12, 12, 12, 12, 12,  3,  2,  3,  3,  3,  3,  3,  3},
-		{  2,  3,  2,  3,  2,  3,  2,  3,  3,  3,  3,  3,  3},
-		{  2,  3,  2,  3,  2,  3,  2,  3,  3,  3,  3,  3,  3},
+		{ 12, 12, 12, 12, 12,  3,  2,  3,  3, 12, 12, 12,  3},
+		{  2,  3,  2,  3,  2,  3,  2,  3,  3, 12, 12, 12,  3},
+		{  2,  3,  2,  3,  2,  3,  2,  3,  3, 12, 12, 12,  3},
 		{  2,  3,  2,  3,  2,  3,  2,  3,  3,  3,  3,  3,  3},
 	},
 	roofVector = {
@@ -175,9 +189,9 @@ debugroom = {
 		{  0,  0,  0,  0,  0, 16,  0,  0,  0,  0,  0,  0},
 		{  0,  0,  0,  0,  0, 16, 16,  0,  0,  0,  0,  0},
 		{  0,  0,  0,  0,  0, 16, 48,  0,  0,  0,  0,  0,  0},
-		{  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-		{  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-		{  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+		{  0,  0,  0,  0,  0,  0,  0,  0,  0, 30, 30, 30,  0},
+		{  0,  0,  0,  0,  0,  0,  0,  0,  0, 30, 30, 30,  0},
+		{  0,  0,  0,  0,  0,  0,  0,  0,  0, 30, 30, 30,  0},
 		{  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
 	},
 	eastVector = {
@@ -461,7 +475,7 @@ for i = 1, #debugroom.floorOffsetVector do
 end]]
 
 testroom = debugroom
-Plush.setMap(testroom.wallsVector, testroom.roofVector, testroom.floorVector, testroom.roofOffsetVector, testroom.floorOffsetVector, imageVector, testroom.eastVector, testroom.northVector, quads)
+Plush.setMap(testroom.wallsVector, testroom.roofVector, testroom.floorVector, testroom.roofOffsetVector, testroom.floorOffsetVector, imageVector, quads)
 Plush.setRenderDistance(testroom.renderDistance)
 --Plush.fog(testroom.fogColour[1], testroom.fogColour[2], testroom.fogColour[3])
 Plush.setFov(90)
@@ -482,6 +496,8 @@ while not Metal.checkClose() do
 		debuglog = 'LOG: ' .. WINTER_PROCESSOR_NAME .. ':' .. WINTER_OS_PLATFORM .. ':' .. WINTER_OS_VERSION .. '\n'
 		debugentries = 0
 	end
+
+	setLights(playerx, playery, playerh)
 
 	oldr = WINTER_KEY_R
 	oldf = WINTER_KEY_F

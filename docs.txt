@@ -114,55 +114,57 @@ Lua Functions
 		loadFont(path, size)					load a font to memory
 		renderText(string, font, r, g, b, a)	render text and return it as textureless image data
 
-	Plush.																			!!!Memory management not handled by Lua!!!
-																					System facing functions
-		project(x, y, z, focus)														convert a 3d point to a 2d point
-		raycast(PlushImage)															render a scene with raycasts
-		setPlayerHeight(feet)														set the 3d camera height
-		getPlayerHeight()															get the 3d camera height
-		setPlayerPosition(x, y)														set the player 3d position
-		getPlayerPosition()															get the player 3d position
-		setPlayerRotation(rad)														set the camera rotation (-left +right)
-		getPlayerRotation()															return the camera rotation in radians
-		setRenderDistance(number)													set the render distance
-		getRenderDistance()															get the render distance
-		setTilt(rad)																set the camera tilt (-down +up)
-		getTilt()																	get the camera tilt in radians
-		setMap(wall, roof, floor, roofOff, floorOff, textures, east, north, quads)	set the raycast scene
-		movePlayer(distance, x, y)													move the player forward or backward if true, side to side if false
-		printImage(image, x, y)														print an image to the terminal
-		threads(number)																set the number of threads the engine can access
-		fog(r, g, b)																set the fog colour
-		setFov(degrees)																set the fov
-		getFov()																	return the fov in degrees
-		setAccuracy(number)															set the raycast accuracy
-		getAccuracy()																get the raycast accuracy
-		dither(image, range, upscale)												add noise to an image
-		skew(srcImage, tgtImage, tlx, tly, trx, try, blx, bly, brx, bry)			fast transform an image onto a buffer
-		sortVertex(faces, camX, camY, camZ, yaw, tilt, roll)						return a sorted table of visible faces
-		bilinear(image, scale)														upsacle an image with bilinear filtering
-		trimImage(image, width, height)												trim an image down to a specified size
-		bilinearSolid(image)														apply bilinear filtering to an image without resizing
-		movePlayer(distance, x, y)													get the location if the player were to move forward or backward if true, side to side if false
-		createImage(width, height, red, green, blue, aether)						create a textureless PlushImage
-		checkImage(image)															return true if a valid image is provided, clean corrupted memory if not
-		saveImage(path, image)														save an image to disk
-		blitImage(target, source, x, y, blend, scale, rotation)						render an image to another image
-		transformImage(image, x1, x2, x3, x4, y1, y2, y3, y4)						perspective transform an image into a new buffer
-		modifyImage(image, node, r, g, b, a)										apply image pseudo shaders to an image
-		mirrorImage(image, bool)													mirror an image, y axis if false, x axis if true
-		killImage(image)															free an image from memory, when using GLFW this will also free a gpu texture
-		imageSize(image)															return the width and height of an image
-		setReflection(number)														set the reflection intensity for ray tracer
-		setRaytrace(number)															set maximum reflections in ray tacer
-		insertReflection(target, source)											insert source image to target image as a reflection map for ray tracing
-		loadPNG(path)																return an image and the height, width of the image
-																					User facing functions
-		checkWall(x, y)																check if a position is in a wall or not
-		createCube(x, y, sx, sy, z)													create a 3d cube
-		createFace(x, y, sx, sy, ox, oy, direction, horizontal)						create a 3d face
-		round90(number, step)														round a number to its nearest multiple of step
-		within(number, range, target)												check if a number is within a range of another number
+	Plush.																	!!!Memory management not handled by Lua!!!
+																			System facing functions
+		project(x, y, z, focus)												convert a 3d point to a 2d point
+		raycast(PlushImage)													render a scene with raycasts
+		spawnLight(x, y, z, r, g, b, intensity)								spawn a light source
+		clearLights()														kill all light sources
+		setPlayerHeight(feet)												set the 3d camera height
+		getPlayerHeight()													get the 3d camera height
+		setPlayerPosition(x, y)												set the player 3d position
+		getPlayerPosition()													get the player 3d position
+		setPlayerRotation(rad)												set the camera rotation (-left +right)
+		getPlayerRotation()													return the camera rotation in radians
+		setRenderDistance(number)											set the render distance
+		getRenderDistance()													get the render distance
+		setTilt(rad)														set the camera tilt (-down +up)
+		getTilt()															get the camera tilt in radians
+		setMap(wall, roof, floor, roofOff, floorOff, textures, quads)		set the raycast scene
+		movePlayer(distance, x, y)											move the player forward or backward if true, side to side if false
+		printImage(image, x, y)												print an image to the terminal
+		threads(number)														set the number of threads the engine can access
+		fog(r, g, b)														set the fog colour
+		setFov(degrees)														set the fov
+		getFov()															return the fov in degrees
+		setAccuracy(number)													set the raycast accuracy
+		getAccuracy()														get the raycast accuracy
+		dither(image, range, upscale)										add noise to an image
+		skew(srcImage, tgtImage, tlx, tly, trx, try, blx, bly, brx, bry)	fast transform an image onto a buffer
+		sortVertex(faces, camX, camY, camZ, yaw, tilt, roll)				return a sorted table of visible faces
+		bilinear(image, scale)												upsacle an image with bilinear filtering
+		trimImage(image, width, height)										trim an image down to a specified size
+		bilinearSolid(image)												apply bilinear filtering to an image without resizing
+		movePlayer(distance, x, y)											get the location if the player were to move forward or backward if true, side to side if false
+		createImage(width, height, red, green, blue, aether)				create a textureless PlushImage
+		checkImage(image)													return true if a valid image is provided, clean corrupted memory if not
+		saveImage(path, image)												save an image to disk
+		blitImage(target, source, x, y, blend, scale, rotation)				render an image to another image
+		transformImage(image, x1, x2, x3, x4, y1, y2, y3, y4)				perspective transform an image into a new buffer
+		modifyImage(image, node, r, g, b, a)								apply image pseudo shaders to an image
+		mirrorImage(image, bool)											mirror an image, y axis if false, x axis if true
+		killImage(image)													free an image from memory, when using GLFW this will also free a gpu texture
+		imageSize(image)													return the width and height of an image
+		setReflection(number)												set the reflection intensity for ray tracer
+		setRaytrace(number)													set maximum reflections in ray tacer
+		insertReflection(target, source)									insert source image to target image as a reflection map for ray tracing
+		loadPNG(path)														return an image and the height, width of the image
+																			User facing functions
+		checkWall(x, y)														check if a position is in a wall or not
+		createCube(x, y, sx, sy, z)											create a 3d cube
+		createFace(x, y, sx, sy, ox, oy, direction, horizontal)				create a 3d face
+		round90(number, step)												round a number to its nearest multiple of step
+		within(number, range, target)										check if a number is within a range of another number
 
 	Metal.							!!!Memory management not handled by Lua!!!
 		renderImage(image)			render an image to the window
