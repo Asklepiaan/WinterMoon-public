@@ -35,13 +35,17 @@ improved CFBundle info list
 
 0.6 release bugs
 
-red shift on Winter.getWindow() return - no workaround, its a feature for now
-file read checks on read only system crash - no work around, dont run from .dmg
-load game not working - fixed
-save game not working - fixed
-gpu textured images cannot be modified - call GLFW.killTexture(image) before modifying
-some pronoun replacements erase characters from a string that should not be erased - bodged in a ruby script for now
-crash on macos 26 - fixed
+-= Fixed =-
+load game not working																- fixed, bad file access check
+save game not working																- fixed, bad file access check
+crash on macos 26																	- fixed, was a gatekeeper issue
+-= It's a feature now =-
+red shift on Winter.getWindow() return												- no workaround, its a feature for now
+-= Bodged =-
+gpu textured images cannot be modified												- call GLFW.killTexture(image) before modifying
+some pronoun replacements erase characters from a string that should not be erased	- bodged in a ruby script for now due to a bug in lua gsub
+-= Not fixed =-
+file read checks on read only system crash											- no work around, dont run from .dmg
 
 -------------------------------------------------------------------------------
 
@@ -72,10 +76,14 @@ added Metal rendering functions
 
 0.7 release bugs
 
-red shift on Winter.getWindow() return - keeping as logic feature, use WINTER_AETHER_CLEANUP render node to remove
-file write checks on read only system crash
-memory corruption on GLFW.blitImage() - fixed, was actually Winter.cleanup()
-metal renderer hangs entire system and external processes sometimes - possibly fixed
+-= Fixed =-
+memory corruption on GLFW.blitImage()								- fixed, was actually Winter.cleanup()
+-= It's a feature now =-
+red shift on Winter.getWindow() return								- keeping as logic feature, use WINTER_AETHER_CLEANUP render node to remove
+-= Bodged =-
+metal renderer hangs entire system and external processes sometimes	- possibly fixed
+-= Not fixed =-
+file write checks on read only system crash							- bad file access checks due to bug in lua
 
 -------------------------------------------------------------------------------
 
@@ -128,21 +136,13 @@ added Plush.createImage()
 added textframebuffer debug flag
 added Plush.within()
 added Plush.checkImage()
-rebound GLFW.saveImage() to Plush.saveImage()
 rebound Metal.saveImage() to Plush.saveImage()
-rebound GLFW.blitImage() to Plush.blitImage()
 rebound Metal.blitImage() to Plush.blitImage()
-rebound GLFW.transformImage() to Plush.transformImage()
 rebound Metal.transformImage() to Plush.transformImage()
-rebound GLFW.modifyImage() to Plush.modifyImage()
 rebound Metal.modifyImage() to Plush.modifyImage()
-rebound GLFW.mirrorImage() to Plush.mirrorImage()
 rebound Metal.mirrorImage() to Plush.mirrorImage()
-rebound GLFW.killImage() to Plush.killImage()
 rebound Metal.killImage() to Plush.killImage()
-rebound GLFW.imageSize() to Plush.imageSize()
 rebound Metal.imageSize() to Plush.imageSize()
-rebound GLFW.loadPNG() to Plush.loadPNG()
 rebound Metal.loadPNG() to Plush.loadPNG()
 added experimental support for macOS 10.5 ppc32 (10.5-10.7 x86 through Rosetta)
 changed from cpp11 to cpp17
@@ -155,15 +155,58 @@ added Plush.setReflection()
 added Plush.setRaytrace()
 fixed arbitrary quad support in ray tracer
 switched from ray tracing to path tracing
+added Winter.orbit()
+added Plush.savePlushImage()
+added Plush.loadPlushImage()
+rebound Plush.round90() to Winter.round90()
+rebound Plush.within() to Winter.within()
+added Plush.translate()
+added Plush.rotate()
+added Plush.setLightLevel()
+removed opengl support
+added Plush.setSize()
+added Ruby.runAsync()
+added Ruby.clearAsync()
+added Ruby.pauseAsync()
+added Ruby.resumeAsync()
+added Ruby.setRounding()
+added lua_var()
+added lua_var?()
+added set_lua_var()
+added WinterScript language support
+added Winter.runScript()
+added Winter.getVar()
+added Winter.setVar()
+added getLua()
+added setLua()
+added print()
+added getTimeMs()
+added random()
+added toString()
+added toNumber()
 
 0.8 release bugs
 
-file write checks on read only system crash
-metal renderer occasinally hangs other apps - fixed
-Plush.sortVertex() improperly applies painter
-Plush.sortVertex() improperly culls some faces
-Plush.createFace() is not written yet
-Plush.project() does not support roll yet - will not be added
-rays cast into void now demolish performance - fixed
-higher frame rates prevent text slide clicks from playing
-light paths have fucky hit detection with walls
+-= Fixed =-
+metal renderer occasinally hangs other apps																- fixed, read the documentation
+rays cast into void now demolish performance															- fixed, switched from dda to modified lazy sweep
+light paths are not obstructed by arbitrary quads														- fixed, modified lazy sweep
+light paths do not obey transparent colour blending														- fixed, now pass colour and aether data back from light obsturction checks for light blending
+-= It's a feature now =-
+-= Bodged =-
+Winter.orbit() works poorly in 3d models																- aip, use Plush.rotate() instead
+-= Not fixed =-
+file write checks on read only system crash																- bug in lua file access checks
+Plush.sortVertex() improperly applies painter															- aip
+Plush.sortVertex() improperly culls some faces															- aip
+Plush.createFace() is not written yet																	- aip
+Plush.project() does not support roll yet																- aip
+higher frame rates prevent text slide clicks from playing												- issue with mixer implimentation
+light paths have fucky hit detection with auto generated roof/floor tiles								- issue with path tracing cpu optimisation
+quads only have 1 side so they can be illuminated from the back											- issue with ray tracing cpu optimisation
+PlushImage native loading causes segmentation faults													- skill issue with developer
+path tracing has poor colour blending when interacting with objects smaller than 3 inches				- issue with path tracing cpu optimisation
+path tracing has no colour blending when interacting with auto generated quads							- aip
+Ruby.resumeAsync() does not work																		- aip
+aset_lua_var() is not thread safe																		- probably aip
+WinterScript floating point data is able to read arbitrary data from external macos processes as noise	- probably CVE

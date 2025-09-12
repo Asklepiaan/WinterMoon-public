@@ -16,13 +16,17 @@ Development Tips
 	The 3d camera is at the wrong height
 		Plush.setPlayerHeight(feet + (inches / 12)) or Plush.setPlayerHeight(feet, inches)
 	The 3d renderer runs very slow
-		Try changing the number of threads with Plush.threads(), the default threadding is 8 threads.
-		This will also change the speed of Render.blitImage() which can result in faster speeds than using Render.renderImage() with GLFW.
+		Try changing the number of threads with Plush.threads(), the default threadding is 6 threads for a platform that is unrecognised.
+		A list of recognised platforms can be found below the Minimum Specs section.
+		This will also change the speed of Render.blitImage().
 	I want to redefine a function
 		The functions under "System facing functions" cannot be redefined safely, "User facing functions" can be redefined safely.
 		If a function is not labelled it can be assumed to by a system function.
 	The Quartz renderer is extremely slow and does not detect inputs
-		Dont use the Quartz renderer lmao
+		Dont use the Quartz renderer lmao, the macos 10.5 port of the engine only exists to flex on the open source cult who advertise hardware and software freedom then kills off older os and platform support.
+		If you must run your software on a PowerPC mac, please use a dual processor G4 or a G5 system and set the threading to 2 (4 if the G5 is also a dual processor) as that will greately speed up 2d and 3d rendering to almost 5fps.
+		There is currently no gpu acceleration to maximise the code that doesnt need modification for platform ports.
+		With a single thread on a powermac you can expect 2 seconds per frame in the 3d renderer and 15 frames per second in the 2d renderer.
 
 Minimum Specs
 	macOS
@@ -32,6 +36,33 @@ Minimum Specs
 		90mb free ram
 		40mb free space HDD, if lodepng in use ssd required and ramdisk recommended
 
+Recognised Platforms
+	These CPU names are currently recognised by the game engine, if they are detected at startup they will automatically change the number of threads and provide a recomended framerate.
+	Your specific hardware configuration may support more threads than listed here, you can increase the threads manually with Plus.threads() if you wish. The numbers here are based on the minimum spec available for a specific processor.
+	If your hardware is not recognised it will default to 6 threads, you are probably on a hackintosh or development hardware if your processor is not even detected as Unknown Intel or Apple processor.
+		Processor name: PowerPC G3			Default threading: 1	Recommended framerate: 0.5	Target framerate: 24	Tested framerate: 
+		Processor name: PowerPC G4			Default threading: 1	Recommended framerate: 0.75	Target framerate: 24	Tested framerate: 0.5/15
+		Processor name: PowerPC G5			Default threading: 2	Recommended framerate: 0.75	Target framerate: 24	Tested framerate: 0.8/20
+		Processor name: Unknown Intel		Default threading: 2	Recommended framerate: 30	Target framerate: 24	Tested framerate: 
+		Processor name: Apple processor		Default threading: 8	Recommended framerate: 45	Target framerate: 24	Tested framerate: 
+		Processor name: Apple A12Z Bionic	Default threading: 8	Recommended framerate: 45	Target framerate: 24	Tested framerate: 50/60
+		Processor name: Apple A18 Pro		Default threading: 6	Recommended framerate: 30	Target framerate: 24	Tested framerate: 
+		Processor name: Apple M1			Default threading: 8	Recommended framerate: 50	Target framerate: 24	Tested framerate: 64/70
+		Processor name: Apple M1 Pro		Default threading: 8	Recommended framerate: 50	Target framerate: 24	Tested framerate: 
+		Processor name: Apple M1 Max		Default threading: 10	Recommended framerate: 50	Target framerate: 24	Tested framerate: 
+		Processor name: Apple M1 Ultra		Default threading: 20	Recommended framerate: 50	Target framerate: 24	Tested framerate: 
+		Processor name: Apple M2			Default threading: 8	Recommended framerate: 30	Target framerate: 24	Tested framerate: 
+		Processor name: Apple M2 Pro		Default threading: 10	Recommended framerate: 30	Target framerate: 24	Tested framerate: 78/80
+		Processor name: Apple M2 Max		Default threading: 12	Recommended framerate: 30	Target framerate: 24	Tested framerate: 
+		Processor name: Apple M2 Ultra		Default threading: 24	Recommended framerate: 30	Target framerate: 24	Tested framerate: 
+		Processor name: Apple M3			Default threading: 8	Recommended framerate: 30	Target framerate: 24	Tested framerate: 
+		Processor name: Apple M3 Pro		Default threading: 11	Recommended framerate: 30	Target framerate: 24	Tested framerate: 
+		Processor name: Apple M3 Max		Default threading: 13	Recommended framerate: 30	Target framerate: 24	Tested framerate: 
+		Processor name: Apple M3 Ultra		Default threading: 28	Recommended framerate: 30	Target framerate: 24	Tested framerate: 
+		Processor name: Apple M4			Default threading: 8	Recommended framerate: 80	Target framerate: 24	Tested framerate: 
+		Processor name: Apple M4 Pro		Default threading: 12	Recommended framerate: 80	Target framerate: 24	Tested framerate: 240/1500
+		Processor name: Apple M4 Max		Default threading: 14	Recommended framerate: 80	Target framerate: 24	Tested framerate: 
+
 Compiler Notes
 	By default Metal+CoreGraphics and Appkit are used for rendering, these can be changed with `make include-glfw all` or `make include-lodepng all`, this is not recommended as the native macos code is very fast compared to the generalised alternative options
 	Building from macos 11 and higher will result in a universial binary being built and combined together, if built in debug mode 2 extra binaries will be added to the distribution package.
@@ -40,10 +71,10 @@ Compiler Notes
 		WinterMoon-x64: intel amd64 for intel macs
 	For unknown reasons the intel build runs faster than native arm in some cases so you may opt to only distribute this.
 	Building on older os version has not been tested, support will not be given as you shouldnt have access to the source code anyways.
+	Building from macos 10.5 will result in only a powerpc binary being built, WinterMoon-ppc can be added to the universial binary with lipo to create a proper release binary
 
 Compiler Variables
 	USE_
-		GLFW_WINDOW	use glfw for window management
 		QUARTZ_
 			AUDIO		use native powerpc code for macos audio
 			FONT		use native powerpc code for text rendering
@@ -95,6 +126,9 @@ Lua Functions
 		saveGame(number)					save the current progess to a specified slot
 		cleanup()							empty the render queue
 		renderStack()						render the renderQueue
+		orbit(x1, y1, x2, y2, degrees)		orbit a point around another point
+		round90(number, step)				round a number to its nearest multiple of step
+		within(number, range, target)		check if a number is within a range of another number
 
 	Audio.
 		open(string)					open audio file, return track object and success boolean
@@ -103,10 +137,15 @@ Lua Functions
 		free()							clear a track index
 		clear()							clear audio vector
 
-	Ruby.					!!!Memory management not handled by Lua!!!
-		startup()			start the mruby vm
-		kill()				kill the mruby vm
-		runScript(string)	return the output of a ruby script
+	Ruby.							!!!Memory management not handled by Lua!!!
+		startup()					start the mruby vm
+		kill()						kill the mruby vm
+		runScript(string)			return the output of a ruby script, this will pause any async tasks
+		runAsync(string)			run a script asyncronously, this will clear any currently running script
+		clearAsync()				clear all async tasks
+		pauseAsync()				pause the currently running asnyc script
+		resumeAsync()				resume the current async task if present
+		setRounding(bool, range)	set the rouding range for ruby floats
 
 	Font.										!!Memory management not handled by lua!!
 		resizeFont(font, size)					change the size of a font
@@ -116,8 +155,11 @@ Lua Functions
 
 	Plush.																	!!!Memory management not handled by Lua!!!
 																			System facing functions
+		setSize(float)														set the size of auto generated tile spaces in feet
 		project(x, y, z, focus)												convert a 3d point to a 2d point
+		setQuads(table)														set the quads map for 3d rendering
 		raycast(PlushImage)													render a scene with raycasts
+		setLightLevel(min, max)												set light level ranges
 		spawnLight(x, y, z, r, g, b, intensity)								spawn a light source
 		clearLights()														kill all light sources
 		setPlayerHeight(feet)												set the 3d camera height
@@ -159,12 +201,14 @@ Lua Functions
 		setRaytrace(number)													set maximum reflections in ray tacer
 		insertReflection(target, source)									insert source image to target image as a reflection map for ray tracing
 		loadPNG(path)														return an image and the height, width of the image
+		savePlushImage(image, filepath)										save a PlushImage to disk
+		loadPlushImage(filepath)											load a PlushImage from disk
 																			User facing functions
 		checkWall(x, y)														check if a position is in a wall or not
 		createCube(x, y, sx, sy, z)											create a 3d cube
 		createFace(x, y, sx, sy, ox, oy, direction, horizontal)				create a 3d face
-		round90(number, step)												round a number to its nearest multiple of step
-		within(number, range, target)										check if a number is within a range of another number
+		translate(quad, x, y, z)											translate a 3d quad map
+		rotate(quad, sx, sy, sz, rotX, rotY, rotZ)							rotate a 3d quad map
 
 	Metal.							!!!Memory management not handled by Lua!!!
 		renderImage(image)			render an image to the window
@@ -178,27 +222,9 @@ Lua Functions
 		killWindow()				kill the window
 		spawnWindow(x, y, string)	create the window, this window cannot be resized and only one can exist at a time
 
-	GLFW.											!!!Memory management not handled by Lua!!!
-		renderImage(image, x, y, scale, rotation)	render an image to the window and create a gpu texture if it doesnt exist
-		killTexture(image)							free a gpu texture from memory
-		loadPNG(path)								return a textureless image and the height, width of the image
-		updateInput()								push the current HID state, this does not return any data but sets several varaibles in the stack
-		forceUpdate()								force the window up update
-		exchangeBuffer()							swap the render buffers
-		setup2D(x1, x2, y1, y2)						adjust renderer to render in pseudo2D
-		getTitle()									return the window title
-		getWindow()									return a textureless image of the current framebuffer
-		setTitle(string)							set a new title for the window
-		clearBuffer(r, g, b, a)						empty the framebuffer and fill it with a colour
-		checkClose()								return true if the window should close
-		killWindow()								kill the window
-		spawnWindow(x, y, string)					create the window, this window cannot be resized and only one can exist at a time
-
 Lua Variables
-	Render					rendering functions table, this is automatically determined by the engine and filled in with copies of GLFW or metal
+	Render					rendering functions table, this is automatically filled with a duplicate of the Metal rendering table, this is now just a placeholder since OpenGL has been depreciated
 	Metal					metal/quartz rendering functions table
-	GLFW					glfw rendering functions table
-		_ENABLED			bool to check if GLFW functions exist
 	QUARTZ_ENABLED			bool to check if Quartz functions exist
 	METAL_ENABLED			bool to check if metal functions exist
 	MIXER_
@@ -212,6 +238,12 @@ Lua Variables
 	debugger				bool to enable debug mode, debug mode functions may change or cease functioning with different releases
 	checksumBypass			bool to bypass savedata security
 	WINTER_
+		INT					WinterScript integer data type
+		FLOAT				WinterScript floating point data type
+		BOOL				WinterScript boolean data type
+		STRING				WinterScript string data type
+		FUNCTION			WinterScript function data type
+		POINTER				WinterScript pointer data type
 		FRAMEBUFFER			preloaded 960x544px 0,0,0,0 image to use as a framebuffer in metal renderer
 		SCRIPT				name of the startup script, defaults to visual-novel
 		SCREEN_
@@ -478,11 +510,11 @@ Lua Variables
 	escapePattern			Gender processor variable
 
 Lua Data Structures
-	renderQueue		{identifier = id, layer = id, surface = GLFWimage, text = string, text2 = string, x = number, y = number, fw = number, w = number, h = number, colour = {r,g,b,a}, type = id, font = MacFont, scale = float, rotation = float}
+	renderQueue		{identifier = id, layer = id, surface = PlushImage, text = string, text2 = string, x = number, y = number, fw = number, w = number, h = number, colour = {r,g,b,a}, type = id, font = MacFont, scale = float, rotation = float}
 	
 	pages			{height = number, speed = number, padding = number, text = string, ftext = string, time = string, ftime = string, date = string, fdate = string, location = string, flocation = string, region = string, fregion = string, name = string, fname = string, title = string, ftitle = string, background = string, backgroundFallback = string, ui = string, uiFallback = string, char1 = string, char1Fallback = string, active1 = bool, char2 = string, char2Fallback = string, active2 = bool, char3 = string, char3Fallback = string, active3 = bool, char4 = string, char4Fallback = string, active4 = bool, music = number, musicFallback = number, action = id, actionPath = lua code block, colour = colour, weather = id, weathereffect = string, weatherseed = number, weatherstart = number, weatherend = number, weatherscale = number, weatherfb = string, weatherbg = string, weathercl = string, weatherfg = string, weatherfall = number, weatherdrift = number, weatherrotate = number, weatherstartrotate = number, weatherdriftupper = number, weatherdriftlower = number, option = string, options = options, selection = string, selectionFallback = string, framerate = number, targetpage = number}
 	parallaxPoints	{number, float, float, float, float, number}
-	oldQueue		{identifier = id, layer = id, surface = GLFWimage, text = string, text2 = string, x = number, y = number, fw = number, w = number, h = number, colour = {r,g,b,a}, type = id, font = MacFont, scale = float, rotation = float}
+	oldQueue		{identifier = id, layer = id, surface = PlushImage, text = string, text2 = string, x = number, y = number, fw = number, w = number, h = number, colour = {r,g,b,a}, type = id, font = MacFont, scale = float, rotation = float}
 	playlist		{string, number}
 	fonts			{MacFont, float}
 	options			{string, lua code block}
@@ -496,13 +528,30 @@ save-1.plush
 	This file is used to place initialisation data, you can also use this to direct execution to a different lua script.
 	If you use a different lua script then all user facing funtions will still work, and the default engine will take hold when your script finishes and render atleast a single frame before closing. It is advised that you set mode to WINTER_RENDER_EXIT to prevent a crash on exit.
 
+WinterScript Functions
+	print(variable)				print the contents of a variable
+	getTimeMs()					get the current time in milliseconds
+	random()					get a random float between 0 and 1
+	random(maximum)				get a random number between 0 and maximum
+	random(minimum, maximum)	get a random number between minimum and maximum
+	toString(variable)			convert a variable to a string
+	toNumber(string)			convert a string to a number
+
+WinterScript Variables
+	WINTER_VERSION	floating point number with the current version number
+	WINTER_RELEASE	string witht he current release type
+	WINTER_NAME		string with the script version name
+	WINTER_AUTHOR	string with the author name
 
 Ruby Functions
 									System facing functions
-	IO.write						processor function for script capture
+	IO.write()						processor function for script capture
+	lua_var(var)					pull a lua data space into the ruby vm
+	lua_var?(var)					check if a lua data space exists
+	set_lua_var(var, data)			set a lua variable
 									User facing functions
 	fillHash!()						clean up gaps in a hash
-	lua_key_pairs(hash)				convert a ruby hash to a lua table
+	lua_key_pairs(hash)				convert a ruby hash to a lua table string
 	dFeet(feet, inches)				return the imperial decimal of a provided height
 	dMetres(metres, centimetres)	return the imperial decimal of a provided height
 	calcHeight(feet)				return the pixel offset of a provided height
