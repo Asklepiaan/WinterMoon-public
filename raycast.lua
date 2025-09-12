@@ -3,19 +3,199 @@ framecolour = {255, 0, 255}
 drawFrame = true
 frames = 0
 
+Plush.setReflection(0.15)
+
 playerx = 0
 playery = 0
-playerh = 5 * (7 / 12)
+playerh = 5 + (7 / 12)
+
+diamond = {
+	{
+		tl = {80, 16, 48},
+		tr = {112, 16, 48},
+		br = {112, -16, 16},
+		bl = {80, -16, 16},
+		texture = 11
+	},
+	{
+		tl = {112, 16, 16},
+		tr = {80, 16, 16},
+		br = {80, -16, -16},
+		bl = {112, -16, -16},
+		texture = 17
+	},
+	{
+		tl = {80, 16, 16},
+		tr = {80, 16, 48},
+		br = {80, -16, 16},
+		bl = {80, -16, -16},
+		texture = 19
+	},
+	{
+		tl = {112, 16, 48},
+		tr = {112, 16, 16},
+		br = {112, -16, -16},
+		bl = {112, -16, 16},
+		texture = 19
+	},
+	{
+		tl = {80, 16, 48},
+		tr = {112, 16, 48},
+		br = {112, 16, 16},
+		bl = {80, 16, 16},
+		texture = 24
+	},
+	{
+		tl = {80, -16, 16},
+		tr = {112, -16, 16},
+		br = {112, -16, -16},
+		bl = {80, -16, -16},
+		texture = 19
+	}
+}
+quads = {}
+
+torchcube = {
+	{
+		tl = {0,    1, 0.25}, tr = {0.25, 1, 0.25},
+		br = {0.25, 0, 0.25}, bl = {0,    0, 0.25},
+		texture = 12
+	},
+	{
+		tl = {0.25, 1, 0}, tr = {0,    1, 0},
+		br = {0,    0, 0}, bl = {0.25, 0, 0},
+		texture = 12
+	},
+	{
+		tl = {0, 1, 0}, tr = {0, 1, 0.25},
+		br = {0, 0, 0.25}, bl = {0, 0, 0},
+		texture = 12
+	},
+	{
+		tl = {0.25, 1, 0.25}, tr = {0.25, 1, 0},
+		br = {0.25, 0, 0}, bl = {0.25, 0, 0.25},
+		texture = 12
+	},
+	{
+		tl = {0,    1, 0}, tr = {0.25, 1, 0},
+		br = {0.25, 1, 0.25}, bl = {0,    1, 0.25},
+		texture = 12
+	},
+	{
+		tl = {0,    0, 0.25}, tr = {0.25, 0, 0.25},
+		br = {0.25, 0, 0}, bl = {0,    0, 0},
+		texture = 12
+	},
+	{
+		tl = {0,    1.25, 0.25}, tr = {0.25, 1.25, 0.25},
+		br = {0.25, 1,    0.25}, bl = {0,    1,    0.25},
+		texture = 25
+	},
+	{
+		tl = {0.25, 1.25, 0}, tr = {0,    1.25, 0},
+		br = {0,    1,    0}, bl = {0.25, 1,    0},
+		texture = 25
+	},
+	{
+		tl = {0, 1.25, 0}, tr = {0, 1.25, 0.25},
+		br = {0, 1,    0.25}, bl = {0, 1,    0},
+		texture = 25
+	},
+	{
+		tl = {0.25, 1.25, 0.25}, tr = {0.25, 1.25, 0},
+		br = {0.25, 1,    0}, bl = {0.25, 1,    0.25},
+		texture = 25
+	},
+	{
+		tl = {0,    1.25, 0}, tr = {0.25, 1.25, 0},
+		br = {0.25, 1.25, 0.25}, bl = {0,    1.25, 0.25},
+		texture = 25
+	}
+}
+
+torchflat = {
+	{
+		tl = {0,    1, 0.25},
+		tr = {0.25, 1, 0},
+		br = {0.25, 0, 0},
+		bl = {0,    0, 0.25},
+		texture = 12
+	},
+	{
+		tl = {0.25, 1, 0.25},
+		tr = {0,    1, 0},
+		br = {0,    0, 0},
+		bl = {0.25, 0, 0.25},
+		texture = 12
+	},
+	{
+		tl = {0,    1.25, 0.25},
+		tr = {0.25, 1.25, 0},
+		br = {0.25, 1,    0},
+		bl = {0,    1,    0.25},
+		texture = 25
+	},
+	{
+		tl = {0.25, 1.25, 0.25},
+		tr = {0,    1.25, 0},
+		br = {0,    1,    0},
+		bl = {0.25, 1,    0.25},
+		texture = 25
+	}
+}
+
+Plush.translate(torchcube, 24, 0, 24)
+--Plush.translate(torchcube, 25, 0, 23)
+Plush.rotate(torchflat, 0, 0, 0, 45, 0, 0)
+Plush.translate(torchflat, 24, 8, 24)
 
 function setLights(x, y, z)
 	Plush.clearLights()
-	Plush.spawnLight(16 + 8, 16 + 8, 4, 1.0 * 255, 0.6 * 255, 0.2 * 255, 37)
-	Plush.spawnLight(16 + 7, 48 + 8, 8, 0.3 * 255, 0.5 * 255, 1.0 * 255, 48)
-	Plush.spawnLight(100, 100, 8, 1.0 * 255, 1.0 * 255, 1.0 * 255, 32)
-	Plush.spawnLight(80, 168, -16, 1.0 * 255, 1.0 * 255, 1.0 * 255, 320)
-	Plush.spawnLight(x, y, z, 1.0 * 255, 0.0 * 255, 0.1 * 255, 24)
+	Plush.spawnLight(24.125, 24.125, 1.5, 255, 153, 127, 37)
+	--Plush.spawnLight(6*16, 32, 4, 255, 153, 127, 307)
+	Plush.spawnLight(24, 56, 8, 76, 127, 255, 48)
+	Plush.spawnLight(100, 100, 8, 255, 255, 255, 32)
+	Plush.spawnLight(80, 168, 64, 255, 255, 255, 320)
+	Plush.spawnLight(x, y, z, 255, 0, 255, Plush.getRenderDistance() / 10)
 end
 
+function initQuads()
+	return {{
+		tl = {0, 0, 0}, --top left x,y,z
+		tr = {0, 0, 0}, --top right x,y,z
+		br = {0, 0, 0}, --bottom right x,y,z
+		bl = {0, 0, 0}, --bottom left x,y,z
+		texture = 0 --texture index
+	}}
+end
+
+function playerBody()
+	bodyvec = {
+		{
+			tl = {-1, (4 + (3 / 12)), 0},
+			tr = {1 + 1, (4 + (3 / 12)), 0},
+			br = {1 + 1, 0, 0},
+			bl = {-1, 0, 0},
+			texture = 20
+		},
+	}
+	Plush.rotate(bodyvec, 0, 0, 0, 0, Plush.getPlayerRotation() / 0.0174533, 0)
+	Plush.translate(bodyvec, playerx, 0, playery)
+
+	return bodyvec
+end
+
+function insertQuads(quadmap)
+	for i = 1, #quadmap do
+		quads[#quads + 1] = {
+			tl = {quadmap[i].tl[1] + 0, quadmap[i].tl[2] + 0, quadmap[i].tl[3] + 0},
+			tr = {quadmap[i].tr[1] + 0, quadmap[i].tr[2] + 0, quadmap[i].tr[3] + 0},
+			br = {quadmap[i].br[1] + 0, quadmap[i].br[2] + 0, quadmap[i].br[3] + 0},
+			bl = {quadmap[i].bl[1] + 0, quadmap[i].bl[2] + 0, quadmap[i].bl[3] + 0},
+			texture = quadmap[i].texture + 0
+		}
+	end
+end
 
 walls = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/walls.png')
 wall1 = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/wall1.png')
@@ -41,6 +221,7 @@ signeast = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/signeas
 signnorth = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/signnorth.png')
 furry = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/furry.png')
 monji = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/monji.png')
+monjic = Plush.loadPNG(Winter.getPath() .. '../Resources/package/characters/monji/test/nuetral.png')
 --[[
 reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/reflections/walls.png')
 Plush.insertReflection(walls, reflection)
@@ -117,7 +298,8 @@ reflection = Plush.loadPNG(Winter.getPath() .. '../Resources/package/tiles/refle
 Plush.insertReflection(monji, reflection)
 Plush.killImage(reflection)
 ]]
-whitebox = Plush.createImage(16, 16, 0, 0, 0, 0)
+whitebox = Plush.createImage(1, 1, 255, 30, 30, 120)
+longbox = Plush.createImage(1, 1, 190, 120, 80, 254)
 --[[
 reflection = Plush.createImage(16, 16, 0, 0, 0, 0)
 whiteline = Plush.createImage(1, 16, 255, 255, 255, 255)
@@ -138,16 +320,16 @@ Plush.setRaytrace(1)
 --WINTER_FRAMEBUFFER = Plush.loadPNG(Winter.getPath() .. '../Resources/package/ui/empty-480x272.png')
 Plush.fog(15, 0, 10)
 
-imageVector = {nil, walls, floor, roof, pogwall, wall1, wall2, wall3, wall4, wall5, wall6, coheth, bricks1, bricks2, bricks3, bricks4, bricks5, aestya, cohetht, plushiesolid, transparent, signeast, signnorth, furry, monji, whitebox}
---				0	1		2		3	4			5	6		7		8		9	10		11		12		13			14		15		16		17		18			19			20			21			22			23	24		25
+imageVector = {nil, walls, floor, roof, pogwall, wall1, wall2, wall3, wall4, wall5, wall6, coheth, bricks1, bricks2, bricks3, bricks4, bricks5, aestya, cohetht, plushiesolid, transparent, signeast, signnorth, furry, monji, whitebox, monjic, longbox}
+--				0	1		2		3	4			5	6		7		8		9	10		11		12		13			14		15		16		17		18			19			20			21			22			23	24		25			26		27
 debugroom = {
 	startx = 24, starty = 24,
-	renderDistance = 160,
+	renderDistance = 1600000000,
 	fogColour = {0, 0, 255},
 	wallsVector = {
-		{ 12, 25, 16, 25, 12,  4,  4,  1, 19, 20, 19, 19,  0},
+		{ 12, 25, 16, 25, 12,  2,  2,  1, 19, 20, 19, 19,  0},
 		{ 12,  0,  0,  0, 12,  0,  0,  5,  0, 18,  0, 19},
-		{ 13,  0, 15,  0, 12,  0,  0,  5,  0,  0,  0, 19},
+		{ 13,  0, 15,  0, 12,  0,  0,  2,  0,  0,  0, 19},
 		{ 12,  0,  0,  0, 12,  0,  0,  6,  0,  0,  0, 12, 12},
 		{ 12, 12,  0, 12, 12,  0,  0, 20,  0,  0,  0,  0, 11},
 		{  5,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 19},
@@ -159,9 +341,9 @@ debugroom = {
 		{ 12, 12, 12, 12, 12, 19, 11, 19,  3,  3,  3,  3},
 		{ 12, 12, 12, 12, 12, 19, 19, 19,  3,  3,  3,  3},
 		{ 12, 12, 12, 12, 12, 19, 19, 19,  3,  3,  3,  3,  3},
-		{ 12, 12, 12, 12, 12,  3,  2,  3,  3, 12, 12, 12,  3},
-		{  2,  3,  2,  3,  2,  3,  2,  3,  3, 12, 12, 12,  3},
-		{  2,  3,  2,  3,  2,  3,  2,  3,  3, 12, 12, 12,  3},
+		{ 12, 12, 12, 12, 12,  3,  2,  3,  3,  0,  0,  0,  3},
+		{  0,  0,  0,  0,  2,  3,  2,  3,  3,  0,  0,  0,  3},
+		{  0,  0,  0,  0,  2,  3,  2,  3,  3,  0,  0,  0,  3},
 		{  2,  3,  2,  3,  2,  3,  2,  3,  3,  3,  3,  3,  3},
 	},
 	roofVector = {
@@ -170,8 +352,8 @@ debugroom = {
 		{ 12, 12, 12, 12, 12, 19, 19, 19,  2,  2,  2,  2},
 		{ 12, 12, 12, 12, 12, 19, 19, 19, 12, 12, 12, 12, 12},
 		{ 12, 12, 12, 12, 12,  2,  3,  2, 12, 12, 12, 12, 12},
-		{  3,  2,  3,  2,  3,  2,  3,  2, 12, 12, 12, 12, 12},
-		{  3,  2,  3,  2,  3,  2,  3,  2, 12, 12, 12, 12, 12},
+		{  0,  0,  0,  0,  3,  2,  3,  2, 12, 12, 12, 12, 12},
+		{  0,  0,  0,  0,  3,  2,  3,  2, 12, 12, 12, 12, 12},
 		{  3,  2,  3,  2,  3,  2,  3,  2, 12, 12, 12, 12, 12},
 	},
 	floorOffsetVector = {
@@ -418,51 +600,6 @@ abyssintro = {
 	},
 }
 
-quads = {
-	{
-		tl = {80, 16, 48},
-		tr = {112, 16, 48},
-		br = {112, -16, 16},
-		bl = {80, -16, 16},
-		texture = 11
-	},
-	{
-		tl = {112, 16, 16},
-		tr = {80, 16, 16},
-		br = {80, -16, -16},
-		bl = {112, -16, -16},
-		texture = 17
-	},
-	{
-		tl = {80, 16, 16},
-		tr = {80, 16, 48},
-		br = {80, -16, 16},
-		bl = {80, -16, -16},
-		texture = 19
-	},
-	{
-		tl = {112, 16, 48},
-		tr = {112, 16, 16},
-		br = {112, -16, -16},
-		bl = {112, -16, 16},
-		texture = 19
-	},
-	{
-		tl = {80, 16, 48},
-		tr = {112, 16, 48},
-		br = {112, 16, 16},
-		bl = {80, 16, 16},
-		texture = 24
-	},
-	{
-		tl = {80, -16, 16},
-		tr = {112, -16, 16},
-		br = {112, -16, -16},
-		bl = {80, -16, -16},
-		texture = 19
-	}
-}
-
 --[[for i = 1, #debugroom.roofOffsetVector do
 	for j = 1, #debugroom.roofOffsetVector[i] do
 		debugroom.roofOffsetVector[i][j] = debugroom.roofOffsetVector[i][j] + 16
@@ -490,6 +627,8 @@ threads = 12
 alatch = false
 accuracy = 2
 
+Plush.setLightLevel(0.0, 1.0)
+
 while not Metal.checkClose() do
 	wtime = Winter.getClock()
 	if (debugger == true) then
@@ -497,7 +636,15 @@ while not Metal.checkClose() do
 		debugentries = 0
 	end
 
+	Plush.setVoxel(math.random(100), math.random(100), math.random(100), math.random(255), math.random(255), math.random(255), math.random(255))
+
+	quads = initQuads()
 	setLights(playerx, playery, playerh)
+	insertQuads(diamond)
+	insertQuads(playerBody())
+	insertQuads(torchflat)
+	insertQuads(torchcube)
+	Plush.setQuads(quads)
 
 	oldr = WINTER_KEY_R
 	oldf = WINTER_KEY_F
@@ -566,8 +713,8 @@ while not Metal.checkClose() do
 	Plush.setPlayerRotation(direction * 0.0174533)
 	Plush.setTilt(angle * 0.0174533)
 	Plush.threads(threads)
-	if (accuracy < 1) then
-		accuracy = 1
+	if (accuracy < 2) then
+		accuracy = 2
 	end
 	if (accuracy > 2) then
 		accuracy = 2
@@ -580,7 +727,7 @@ while not Metal.checkClose() do
 	if (alatch == false) then
 		Plush.raycast(WINTER_FRAMEBUFFER)
 		alatch = true
-		--Plush.dither(WINTER_FRAMEBUFFER, 12.5, false)
+		Plush.dither(WINTER_FRAMEBUFFER, 12.5, false)
 		Plush.bilinearSolid(WINTER_FRAMEBUFFER)
 	end
 
@@ -618,3 +765,4 @@ while not Metal.checkClose() do
 end
 
 Metal.killWindow()
+Plush.saveImage('/Users/plushie/Desktop/framebuffer.png', WINTER_FRAMEBUFFER)

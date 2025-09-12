@@ -1122,9 +1122,9 @@ while not Render.checkClose() do
 						end
 					end
 				end
-				targetx = Plush.round90(targetx + 2, 16) - 8
-				targety = Plush.round90(targety + 2, 16) - 8
-				targeta = Plush.round90(targeta, 90)
+				targetx = Winter.round90(targetx + 2, 16) - 8
+				targety = Winter.round90(targety + 2, 16) - 8
+				targeta = Winter.round90(targeta, 90)
 			end
 			if (input.key.r) then
 				angle = angle - 5
