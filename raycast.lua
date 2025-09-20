@@ -636,8 +636,6 @@ while not Metal.checkClose() do
 		debugentries = 0
 	end
 
-	Plush.setVoxel(math.random(100), math.random(100), math.random(100), math.random(255), math.random(255), math.random(255), math.random(255))
-
 	quads = initQuads()
 	setLights(playerx, playery, playerh)
 	insertQuads(diamond)

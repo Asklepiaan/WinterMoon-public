@@ -27,6 +27,9 @@ Development Tips
 		If you must run your software on a PowerPC mac, please use a dual processor G4 or a G5 system and set the threading to 2 (4 if the G5 is also a dual processor) as that will greately speed up 2d and 3d rendering to almost 5fps.
 		There is currently no gpu acceleration to maximise the code that doesnt need modification for platform ports.
 		With a single thread on a powermac you can expect 2 seconds per frame in the 3d renderer and 15 frames per second in the 2d renderer.
+	The WinterScript functions dont work on macOS 10.5-10.7
+		Due to issues with the custom PowerPC toolchain, only 8 functions are able to compile to the WinterScript internal variables. WinterScript relies on 11 functions for the bare minimum fucntionality, and 26 functions exist.
+		It was decided to remove WinterScript functionality from legacy versions to maintain compatibility. Also WinterScript runs very slow on 32bit platforms.
 
 Minimum Specs
 	macOS
@@ -87,10 +90,13 @@ Compiler Variables
 			PNG			use native macos code for png processing for 5-6x faster than lodepng, recommend using this when possible
 			WINDOW		use native macos code for window management
 		LODE_PNG		use lodepng for png processing
+		MODERN_MACOS	use modern macOS functions
+		LEGACY_MACOS	use legacy macOS compatibility bodges
 		LIB_RUBY		use mruby
 		SYSTEM_RUBY		use built in system ruby
 		TINY_AUDIO		use open source audio
 		TTF_FONT		use open source text renderer
+		WINTERSCRIPT	enable WinterScript
 
 Lua Notes
 	The Lua VM only has access to 300mb of ram.

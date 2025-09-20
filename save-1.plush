@@ -1,0 +1,17 @@
+WINTER_SCREEN_Y         = 544
+WINTER_SCREEN_X         = 960
+WINTER_SCREEN_CULL_FAR  = 0.1
+WINTER_SCREEN_CULL_NEAR = 100
+WINTER_SCREEN_FOV       = 90
+WINTER_SCRIPT           = 'raycast.lua'
+
+skipwarning = true
+WINTER_PARALLAX_UIFG = false
+debugger = true
+debuggerdeep = false
+textframebuffer = false
+checksumBypass = true
+saveslot = 0
+MIXER_SKIP_SLIDE = true
+
+WINTER_GAME_TARGET = WINTER_GAME_VISUAL_NOVEL
