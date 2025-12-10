@@ -157,7 +157,6 @@ pageChange = false
 pagenum = 0
 running = true
 Winter.clearButtons()
-math.randomseed(543486374)
 print('init finished')
 while not Render.checkClose() do
 	wtime = Winter.getClock()
